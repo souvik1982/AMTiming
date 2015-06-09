@@ -15,6 +15,9 @@ AssociativeMemory::AssociativeMemory(std::string name, double delay, double inTi
   }
   t1out_.push_back(-999);
   t2out_.push_back(-999);
+  
+  v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";AssociativeMemory "+name_+" t1out").c_str(), 100, 0, 10000));
+  v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";AssociativeMemory "+name_+" t2out").c_str(), 100, 0, 10000));  
 }
 
 bool AssociativeMemory::setEventCharacteristics(EventCharacteristics *event)
@@ -53,9 +56,11 @@ bool AssociativeMemory::computeOutputTimes()
       }
     }
     t1out_.at(0)=maxTime+delay_;
+    v_h_t1out_.at(0)->Fill(t1out_.at(0));
     if (nPatterns_!=-999)
     {
       t2out_.at(0)=t1out_.at(0)+nPatterns_*outTime_;
+      v_h_t2out_.at(0)->Fill(t2out_.at(0));
     }
     else
     {

@@ -7,6 +7,7 @@
 #include "TFile.h"
 
 #include "EventCharacteristics.h"
+#include "ToolBox.h"
 
 class Component
 {
@@ -19,6 +20,7 @@ class Component
     std::string get_name();
     void printOutputTimes();
     void writeOutputTimes();
+    void drawOutputTimes();
     
     void clearValues();
     

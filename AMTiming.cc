@@ -108,35 +108,6 @@ int main()
   }
   
   // Read ROOT event files and iterate
-  //TFile *file=TFile("Event.root");
-  
-  TRandom3 *r3=new TRandom3();
-  /*TH1F *h_t2out_ds1_0=new TH1F("h_t2out_ds1_0", ";DataSource ds1 t2out Layer 0", 100, 0, 10000);
-  TH1F *h_t2out_ds1_1=new TH1F("h_t2out_ds1_1", ";DataSource ds1 t2out Layer 1", 100, 0, 10000);
-  TH1F *h_t2out_ds1_2=new TH1F("h_t2out_ds1_2", ";DataSource ds1 t2out Layer 2", 100, 0, 10000);
-  TH1F *h_t2out_ds1_3=new TH1F("h_t2out_ds1_3", ";DataSource ds1 t2out Layer 3", 100, 0, 10000);
-  TH1F *h_t2out_ds1_4=new TH1F("h_t2out_ds1_4", ";DataSource ds1 t2out Layer 4", 100, 0, 10000);
-  TH1F *h_t2out_ds1_5=new TH1F("h_t2out_ds1_5", ";DataSource ds1 t2out Layer 5", 100, 0, 10000);
-  
-  TH1F *h_t1out_sm1_0=new TH1F("h_t1out_sm1_0", ";StubMapper sm1 t1out Layer 0", 100, 0, 10000);
-  TH1F *h_t1out_sm1_1=new TH1F("h_t1out_sm1_1", ";StubMapper sm1 t1out Layer 1", 100, 0, 10000);
-  TH1F *h_t1out_sm1_2=new TH1F("h_t1out_sm1_2", ";StubMapper sm1 t1out Layer 2", 100, 0, 10000);
-  TH1F *h_t1out_sm1_3=new TH1F("h_t1out_sm1_3", ";StubMapper sm1 t1out Layer 3", 100, 0, 10000);
-  TH1F *h_t1out_sm1_4=new TH1F("h_t1out_sm1_4", ";StubMapper sm1 t1out Layer 4", 100, 0, 10000);
-  TH1F *h_t1out_sm1_5=new TH1F("h_t1out_sm1_5", ";StubMapper sm1 t1out Layer 5", 100, 0, 10000);
-  
-  TH1F *h_t2out_sm1_0=new TH1F("h_t2out_sm1_0", ";StubMapper sm1 t2out Layer 0", 100, 0, 10000);
-  TH1F *h_t2out_sm1_1=new TH1F("h_t2out_sm1_1", ";StubMapper sm1 t2out Layer 1", 100, 0, 10000);
-  TH1F *h_t2out_sm1_2=new TH1F("h_t2out_sm1_2", ";StubMapper sm1 t2out Layer 2", 100, 0, 10000);
-  TH1F *h_t2out_sm1_3=new TH1F("h_t2out_sm1_3", ";StubMapper sm1 t2out Layer 3", 100, 0, 10000);
-  TH1F *h_t2out_sm1_4=new TH1F("h_t2out_sm1_4", ";StubMapper sm1 t2out Layer 4", 100, 0, 10000);
-  TH1F *h_t2out_sm1_5=new TH1F("h_t2out_sm1_5", ";StubMapper sm1 t2out Layer 5", 100, 0, 10000);
-  
-  TH1F *h_t1out_am1=new TH1F("h_t1out_am1", ";AssociativeMemory am1 t1out", 100, 0, 10000);
-  TH1F *h_t2out_am1=new TH1F("h_t2out_am1", ";AssociativeMemory am1 t2out", 100, 0, 10000);
-  
-  TH1F *h_t1out_hb1=new TH1F("h_t1out_hb1", ";HitBuffer hb1 t1out", 100, 0, 10000);
-  TH1F *h_t2out_hb1=new TH1F("h_t2out_hb1", ";HitBuffer hb1 t2out", 100, 0, 10000);*/
   
   unsigned int nEvents=1000;
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
@@ -151,6 +122,7 @@ int main()
     event.nStubs_layer.at(4)=std::max(0, int(r3->Gaus(46, 22)));
     event.nStubs_layer.at(5)=std::max(0, int(r3->Gaus(48, 23)));
     event.nPatterns=std::max(0, r3->Poisson(12));
+    event.nOutwords=10;
     
     /*std::cout<<"=== Event === "<<std::endl;
     for (unsigned int i=0; i<6; ++i)
@@ -159,7 +131,6 @@ int main()
     }
     std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
     std::cout<<"=== ==="<<std::endl;*/
-    
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
@@ -171,7 +142,6 @@ int main()
       
       // Printout outputs of this component
       // component->printOutputTimes();
-      if (component->get_name()=="ds1") component->writeOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp
@@ -189,6 +159,14 @@ int main()
         }
       }
     }
+  }
+  
+  // Draw the histograms
+  for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
+  {
+    Component *component=componentRelations.at(i_comp)->comp_;
+    component->writeOutputTimes();
+    component->drawOutputTimes();
   }
   
   return 0;

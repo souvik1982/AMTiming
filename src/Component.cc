@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "TCanvas.h"
+
 #include "../interface/Component.h"
 
 void Component::set_t1in(unsigned int i_in, double value)
@@ -83,6 +85,28 @@ void Component::writeOutputTimes()
     if (v_h_t2out_.at(i)!=0) v_h_t2out_.at(i)->Write();
   }
   file->Close();
+}
+
+void Component::drawOutputTimes()
+{
+  for (unsigned int i=0; i<v_h_t1out_.size(); ++i)
+  { 
+    if (v_h_t1out_.at(i)!=0) 
+    {
+      TCanvas *c=new TCanvas("c", "c", 700, 700);
+      v_h_t1out_.at(i)->Draw();
+      c->SaveAs(("plots/"+std::string(v_h_t1out_.at(i)->GetName())+".png").c_str());
+    }
+  }
+  for (unsigned int i=0; i<v_h_t2out_.size(); ++i)
+  { 
+    if (v_h_t2out_.at(i)!=0) 
+    {
+      TCanvas *c=new TCanvas("c", "c", 700, 700);
+      v_h_t2out_.at(i)->Draw();
+      c->SaveAs(("plots/"+std::string(v_h_t2out_.at(i)->GetName())+".png").c_str());
+    }
+  }
 } 
 
 void Component::clearValues()
