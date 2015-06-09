@@ -69,6 +69,20 @@ void Component::printOutputTimes()
     std::cout<<"  t2out["<<i<<"] = "<<t2out_.at(i)<<std::endl;
   }
   std::cout<<" === === "<<std::endl;
+}
+
+void Component::writeOutputTimes()
+{
+  TFile *file=new TFile((name_+".root").c_str(), "recreate");
+  for (unsigned int i=0; i<v_h_t1out_.size(); ++i)
+  { 
+    if (v_h_t1out_.at(i)!=0) v_h_t1out_.at(i)->Write();
+  }
+  for (unsigned int i=0; i<v_h_t2out_.size(); ++i)
+  { 
+    if (v_h_t2out_.at(i)!=0) v_h_t2out_.at(i)->Write();
+  }
+  file->Close();
 } 
 
 void Component::clearValues()

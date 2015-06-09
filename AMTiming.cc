@@ -3,6 +3,10 @@
 #include <fstream>
 #include <sstream>
 
+#include "TRandom3.h"
+#include "TH1F.h"
+#include "TFile.h"
+
 #include "interface/ComponentRelation.h"
 #include "interface/DataSource.h"
 #include "interface/StubMapper.h"
@@ -106,21 +110,58 @@ int main()
   // Read ROOT event files and iterate
   //TFile *file=TFile("Event.root");
   
-  unsigned int nEvents=1;
+  TRandom3 *r3=new TRandom3();
+  /*TH1F *h_t2out_ds1_0=new TH1F("h_t2out_ds1_0", ";DataSource ds1 t2out Layer 0", 100, 0, 10000);
+  TH1F *h_t2out_ds1_1=new TH1F("h_t2out_ds1_1", ";DataSource ds1 t2out Layer 1", 100, 0, 10000);
+  TH1F *h_t2out_ds1_2=new TH1F("h_t2out_ds1_2", ";DataSource ds1 t2out Layer 2", 100, 0, 10000);
+  TH1F *h_t2out_ds1_3=new TH1F("h_t2out_ds1_3", ";DataSource ds1 t2out Layer 3", 100, 0, 10000);
+  TH1F *h_t2out_ds1_4=new TH1F("h_t2out_ds1_4", ";DataSource ds1 t2out Layer 4", 100, 0, 10000);
+  TH1F *h_t2out_ds1_5=new TH1F("h_t2out_ds1_5", ";DataSource ds1 t2out Layer 5", 100, 0, 10000);
+  
+  TH1F *h_t1out_sm1_0=new TH1F("h_t1out_sm1_0", ";StubMapper sm1 t1out Layer 0", 100, 0, 10000);
+  TH1F *h_t1out_sm1_1=new TH1F("h_t1out_sm1_1", ";StubMapper sm1 t1out Layer 1", 100, 0, 10000);
+  TH1F *h_t1out_sm1_2=new TH1F("h_t1out_sm1_2", ";StubMapper sm1 t1out Layer 2", 100, 0, 10000);
+  TH1F *h_t1out_sm1_3=new TH1F("h_t1out_sm1_3", ";StubMapper sm1 t1out Layer 3", 100, 0, 10000);
+  TH1F *h_t1out_sm1_4=new TH1F("h_t1out_sm1_4", ";StubMapper sm1 t1out Layer 4", 100, 0, 10000);
+  TH1F *h_t1out_sm1_5=new TH1F("h_t1out_sm1_5", ";StubMapper sm1 t1out Layer 5", 100, 0, 10000);
+  
+  TH1F *h_t2out_sm1_0=new TH1F("h_t2out_sm1_0", ";StubMapper sm1 t2out Layer 0", 100, 0, 10000);
+  TH1F *h_t2out_sm1_1=new TH1F("h_t2out_sm1_1", ";StubMapper sm1 t2out Layer 1", 100, 0, 10000);
+  TH1F *h_t2out_sm1_2=new TH1F("h_t2out_sm1_2", ";StubMapper sm1 t2out Layer 2", 100, 0, 10000);
+  TH1F *h_t2out_sm1_3=new TH1F("h_t2out_sm1_3", ";StubMapper sm1 t2out Layer 3", 100, 0, 10000);
+  TH1F *h_t2out_sm1_4=new TH1F("h_t2out_sm1_4", ";StubMapper sm1 t2out Layer 4", 100, 0, 10000);
+  TH1F *h_t2out_sm1_5=new TH1F("h_t2out_sm1_5", ";StubMapper sm1 t2out Layer 5", 100, 0, 10000);
+  
+  TH1F *h_t1out_am1=new TH1F("h_t1out_am1", ";AssociativeMemory am1 t1out", 100, 0, 10000);
+  TH1F *h_t2out_am1=new TH1F("h_t2out_am1", ";AssociativeMemory am1 t2out", 100, 0, 10000);
+  
+  TH1F *h_t1out_hb1=new TH1F("h_t1out_hb1", ";HitBuffer hb1 t1out", 100, 0, 10000);
+  TH1F *h_t2out_hb1=new TH1F("h_t2out_hb1", ";HitBuffer hb1 t2out", 100, 0, 10000);*/
+  
+  unsigned int nEvents=1000;
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     EventCharacteristics event;
-    event.nStubs_layer.at(0)=11;
-    event.nStubs_layer.at(1)=12;
-    event.nStubs_layer.at(2)=13;
-    event.nStubs_layer.at(3)=14;
-    event.nStubs_layer.at(4)=15;
-    event.nStubs_layer.at(5)=16;
-    event.nPatterns=20;
+    
+    // Load some fake data
+    event.nStubs_layer.at(0)=std::max(0, int(r3->Gaus(115, 25)));
+    event.nStubs_layer.at(1)=std::max(0, int(r3->Gaus(77, 21)));
+    event.nStubs_layer.at(2)=std::max(0, int(r3->Gaus(63, 20)));
+    event.nStubs_layer.at(3)=std::max(0, int(r3->Gaus(40, 18)));
+    event.nStubs_layer.at(4)=std::max(0, int(r3->Gaus(46, 22)));
+    event.nStubs_layer.at(5)=std::max(0, int(r3->Gaus(48, 23)));
+    event.nPatterns=std::max(0, r3->Poisson(12));
+    
+    /*std::cout<<"=== Event === "<<std::endl;
+    for (unsigned int i=0; i<6; ++i)
+    {
+      std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
+    }
+    std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
+    std::cout<<"=== ==="<<std::endl;*/
     
     
     // iterate over componentRelations
-    std::cout<<"componentRelations.size() = "<<componentRelations.size()<<std::endl;
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
     {
       ComponentRelation *componentRelation=componentRelations.at(i_comp);
@@ -129,7 +170,8 @@ int main()
       component->computeOutputTimes();
       
       // Printout outputs of this component
-      component->printOutputTimes();
+      // component->printOutputTimes();
+      if (component->get_name()=="ds1") component->writeOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp

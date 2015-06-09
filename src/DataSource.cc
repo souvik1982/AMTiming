@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "../interface/DataSource.h"
+#include "../interface/ToolBox.h"
 
 DataSource::DataSource(std::string name, double outTime)
 {
@@ -12,6 +13,9 @@ DataSource::DataSource(std::string name, double outTime)
     t2in_.push_back(0);
     t1out_.push_back(-999);
     t2out_.push_back(-999);
+    
+    v_h_t1out_.push_back(0);
+    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+itoa(i)).c_str(), (";DataSource layer "+itoa(i)+" t2out").c_str(), 100, 0, 10000));
   } 
 }
 
@@ -33,6 +37,8 @@ bool DataSource::computeOutputTimes()
         {                                                                                            
           t1out_.at(i)=t1in_.at(i);
           t2out_.at(i)=t1in_.at(i)+nStubs_layer_.at(i)*outTime_;
+          
+          v_h_t2out_.at(i)->Fill(t2out_.at(i));
         }                                                                                            
         else                                                                                         
         {                                                                                            

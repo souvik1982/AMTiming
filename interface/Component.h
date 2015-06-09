@@ -3,6 +3,9 @@
 #include <vector>
 #include <string>
 
+#include "TH1F.h"
+#include "TFile.h"
+
 #include "EventCharacteristics.h"
 
 class Component
@@ -15,6 +18,7 @@ class Component
     double get_t2out(unsigned int);
     std::string get_name();
     void printOutputTimes();
+    void writeOutputTimes();
     
     void clearValues();
     
@@ -28,6 +32,7 @@ class Component
     std::vector<double> t2in_;
     std::vector<double> t1out_;
     std::vector<double> t2out_;
-    
     std::string name_;
+    std::vector<TH1F*> v_h_t1out_;
+    std::vector<TH1F*> v_h_t2out_;
 };
