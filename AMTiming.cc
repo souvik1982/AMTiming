@@ -12,6 +12,8 @@
 #include "interface/StubMapper.h"
 #include "interface/AssociativeMemory.h"
 #include "interface/HitBuffer.h"
+#include "interface/CombinationBuilder.h"
+#include "interface/TrackFitter.h"
 
 void removeSpaces(std::string &input)
 {
@@ -102,8 +104,45 @@ int main()
       compRelation->comp_=hb;
       componentRelations.push_back(compRelation);
       std::cout<<"Initialized HitBuffer "<<name_s<<std::endl;
+    }
+    
+    if (component_s.find("CombinationBuilder")!=std::string::npos)
+    {
+      std::string name_s, inTime_s, outTime_s, delay_s;
+      getline(ss, name_s, '|');
+      getline(ss, inTime_s, ',');
+      getline(ss, outTime_s, ',');
+      getline(ss, delay_s, '|');
+      removeSpaces(name_s);
+      double inTime=atof(inTime_s.c_str());
+      double outTime=atof(outTime_s.c_str());
+      double delay=atof(delay_s.c_str());
+      CombinationBuilder *cb=new CombinationBuilder(name_s, inTime, outTime, delay);
+      ComponentRelation *compRelation=new ComponentRelation();
+      compRelation->extractComponentRelation(s);
+      compRelation->comp_=cb;
+      componentRelations.push_back(compRelation);
+      std::cout<<"Initialized CombinationBuilder "<<name_s<<std::endl;
+    }
+    
+    if (component_s.find("TrackFitter")!=std::string::npos)
+    {
+      std::string name_s, inTime_s, outTime_s, delay_s;
+      getline(ss, name_s, '|');
+      getline(ss, inTime_s, ',');
+      getline(ss, outTime_s, ',');
+      getline(ss, delay_s, '|');
+      removeSpaces(name_s);
+      double inTime=atof(inTime_s.c_str());
+      double outTime=atof(outTime_s.c_str());
+      double delay=atof(delay_s.c_str());
+      TrackFitter *cb=new TrackFitter(name_s, inTime, outTime, delay);
+      ComponentRelation *compRelation=new ComponentRelation();
+      compRelation->extractComponentRelation(s);
+      compRelation->comp_=cb;
+      componentRelations.push_back(compRelation);
+      std::cout<<"Initialized TrackFitter "<<name_s<<std::endl;
     } 
-      
   
   }
   

@@ -96,6 +96,7 @@ void Component::drawOutputTimes()
       TCanvas *c=new TCanvas("c", "c", 700, 700);
       v_h_t1out_.at(i)->Draw();
       c->SaveAs(("plots/"+std::string(v_h_t1out_.at(i)->GetName())+".png").c_str());
+      delete c; 
     }
   }
   for (unsigned int i=0; i<v_h_t2out_.size(); ++i)
@@ -105,6 +106,7 @@ void Component::drawOutputTimes()
       TCanvas *c=new TCanvas("c", "c", 700, 700);
       v_h_t2out_.at(i)->Draw();
       c->SaveAs(("plots/"+std::string(v_h_t2out_.at(i)->GetName())+".png").c_str());
+      delete c;
     }
   }
 } 

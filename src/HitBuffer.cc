@@ -60,6 +60,7 @@ bool HitBuffer::computeOutputTimes()
     else
     {
       std::cout<<"ERROR: HitBuffer "<<name_<<" has pin t1in_.at(6) = "<<t1in_.at(6)<<std::endl;
+      return false;
     }
   }
   else
@@ -70,6 +71,7 @@ bool HitBuffer::computeOutputTimes()
     std::cout<<"       procTime = "<<procTime_<<std::endl;
     std::cout<<"       outTime = "<<outTime_<<std::endl;
     std::cout<<"====="<<std::endl;
+    return false;
   }
   return true;
 }
