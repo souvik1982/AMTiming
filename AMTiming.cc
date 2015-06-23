@@ -16,7 +16,7 @@
 #include "interface/CombinationBuilder.h"
 #include "interface/TrackFitter.h"
 
-#include "src/loader.C"
+#include "interface/loader.h"
 
 void removeSpaces(std::string &input)
 {
@@ -169,7 +169,6 @@ int main()
     
     EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs);
     
-    event.nOutwords=10;
     event.nCombinations=20;
     event.nTracks=12;
     
@@ -179,6 +178,7 @@ int main()
       std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
     }
     std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
+    std::cout<<"event.nOutwords = "<<event.nOutwords<<std::endl;
     std::cout<<"=== ==="<<std::endl;
     
     // iterate over componentRelations
