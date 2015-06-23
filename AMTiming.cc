@@ -6,6 +6,7 @@
 #include "TRandom3.h"
 #include "TH1F.h"
 #include "TFile.h"
+#include "TTree.h"
 
 #include "interface/ComponentRelation.h"
 #include "interface/DataSource.h"
@@ -14,6 +15,8 @@
 #include "interface/HitBuffer.h"
 #include "interface/CombinationBuilder.h"
 #include "interface/TrackFitter.h"
+
+#include "src/loader.C"
 
 void removeSpaces(std::string &input)
 {
@@ -148,28 +151,35 @@ int main()
   
   // Read ROOT event files and iterate
   
-  unsigned int nEvents=1000;
+  TFile *eventFile=new TFile("/Users/souvik/AMTrackTrigger/Samples/SLHC/GEN/620_SLHC25p3_results/test1/Neutrino_PU140_tt27_sf1_nz1_pt3_ml5_20150511/tracks.root");
+  TTree *tree=(TTree*)eventFile->Get("ntupler/tree");
+  
+  std::vector<float> *stubs_modId=0;
+  std::vector<float> *stubs_r=0;
+  std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs=0;
+  
+  tree->SetBranchAddress("TTStubs_modId", &(stubs_modId));
+  tree->SetBranchAddress("TTStubs_r", &(stubs_r));
+  tree->SetBranchAddress("AMTTRoads_stubRefs", &(roads_stubRefs));
+  
+  unsigned int nEvents=tree->GetEntries();
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
-    EventCharacteristics event;
+    tree->GetEntry(i_event);
     
-    // Load some fake data
-    event.nStubs_layer.at(0)=std::max(0, int(r3->Gaus(115, 25)));
-    event.nStubs_layer.at(1)=std::max(0, int(r3->Gaus(77, 21)));
-    event.nStubs_layer.at(2)=std::max(0, int(r3->Gaus(63, 20)));
-    event.nStubs_layer.at(3)=std::max(0, int(r3->Gaus(40, 18)));
-    event.nStubs_layer.at(4)=std::max(0, int(r3->Gaus(46, 22)));
-    event.nStubs_layer.at(5)=std::max(0, int(r3->Gaus(48, 23)));
-    event.nPatterns=std::max(0, r3->Poisson(12));
+    EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs);
+    
     event.nOutwords=10;
+    event.nCombinations=20;
+    event.nTracks=12;
     
-    /*std::cout<<"=== Event === "<<std::endl;
+    std::cout<<"=== Event === "<<std::endl;
     for (unsigned int i=0; i<6; ++i)
     {
       std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
     }
     std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
-    std::cout<<"=== ==="<<std::endl;*/
+    std::cout<<"=== ==="<<std::endl;
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
@@ -180,7 +190,7 @@ int main()
       component->computeOutputTimes();
       
       // Printout outputs of this component
-      // component->printOutputTimes();
+      component->printOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp
@@ -201,13 +211,24 @@ int main()
   }
   
   // Draw the histograms
+  // Also produce a HTML summary sheet
+  /*ofstream outfile;
+  outfile.open("AMTimingSummarySheet/AMTimingSummarySheet.html");
+  outfile<<"<html>"<<std::endl;
+  outfile<<"<head>"<<std::endl;
+  outfile<<"<body>"<<std::endl;
+  outfile<<"<h1> AMTiming Summary Sheet </h1>"<<std::endl;
+  outfile<<"<table border='1'>"<<std::endl;
+  outfile<<" <tr>"<<std::endl;
+  outfile<<"  <td>"<<std::endl;
+    
   for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
   {
     Component *component=componentRelations.at(i_comp)->comp_;
     component->writeOutputTimes();
     component->drawOutputTimes();
   }
-  
+  */
   return 0;
   
 }

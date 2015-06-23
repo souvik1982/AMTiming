@@ -1,12 +1,17 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
-struct EventCharacteristics
+class EventCharacteristics
 {
-  std::array<double, 6> nStubs_layer;
-  double nPatterns;
-  double nOutwords;
-  double nCombinations;
-  double nTracks;
+  public: 
+    EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs);
+  
+  public: 
+    std::array<double, 6> nStubs_layer;
+    double nPatterns;
+    double nOutwords;
+    double nCombinations;
+    double nTracks;
 };

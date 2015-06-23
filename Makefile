@@ -6,8 +6,14 @@ all: AMTiming
 clean:
 	rm *.o
 
-AMTiming: Component.o ComponentRelation.o DataSource.o StubMapper.o AssociativeMemory.o HitBuffer.o CombinationBuilder.o TrackFitter.o AMTiming.o
-	c++ Component.o ComponentRelation.o DataSource.o StubMapper.o AMTiming.o AssociativeMemory.o HitBuffer.o CombinationBuilder.o TrackFitter.o -o AMTiming $(ROOTFLAGS) $(ROOTLIBS)
+AMTiming: loader.o EventCharacteristics.o Component.o ComponentRelation.o DataSource.o StubMapper.o AssociativeMemory.o HitBuffer.o CombinationBuilder.o TrackFitter.o AMTiming.o
+	c++ loader.o EventCharacteristics.o Component.o ComponentRelation.o DataSource.o StubMapper.o AMTiming.o AssociativeMemory.o HitBuffer.o CombinationBuilder.o TrackFitter.o -o AMTiming $(ROOTFLAGS) $(ROOTLIBS)
+
+loader.o: src/loader.C
+	c++ -c src/loader.C -c $(ROOTFLAGS)
+
+EventCharacteristics.o: src/EventCharacteristics.cc
+	c++ -c src/EventCharacteristics.cc -c $(ROOTFLAGS)
 
 DataSource.o: src/DataSource.cc
 	c++ -c src/DataSource.cc -c $(ROOTFLAGS)
