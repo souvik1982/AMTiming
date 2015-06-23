@@ -157,20 +157,19 @@ int main()
   std::vector<float> *stubs_modId=0;
   std::vector<float> *stubs_r=0;
   std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs=0;
+  std::vector<float> *tracks_eta=0;
   
   tree->SetBranchAddress("TTStubs_modId", &(stubs_modId));
   tree->SetBranchAddress("TTStubs_r", &(stubs_r));
   tree->SetBranchAddress("AMTTRoads_stubRefs", &(roads_stubRefs));
+  tree->SetBranchAddress("AMTTTracks_eta", &(tracks_eta));
   
   unsigned int nEvents=tree->GetEntries();
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     tree->GetEntry(i_event);
     
-    EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs);
-    
-    event.nCombinations=20;
-    event.nTracks=12;
+    EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs, tracks_eta);
     
     std::cout<<"=== Event === "<<std::endl;
     for (unsigned int i=0; i<6; ++i)
@@ -179,6 +178,8 @@ int main()
     }
     std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
     std::cout<<"event.nOutwords = "<<event.nOutwords<<std::endl;
+    std::cout<<"event.nCombinations = "<<event.nCombinations<<std::endl;
+    std::cout<<"event.nTracks = "<<event.nTracks<<std::endl;
     std::cout<<"=== ==="<<std::endl;
     
     // iterate over componentRelations

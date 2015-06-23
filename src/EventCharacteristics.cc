@@ -2,7 +2,7 @@
 
 #include "../interface/EventCharacteristics.h"
 
-EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs)
+EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs, std::vector<float> *tracks_eta)
 {
   nStubs_layer.at(0)=0;
   nStubs_layer.at(1)=0;
@@ -37,4 +37,7 @@ EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std:
     }
     nOutwords+=nMaxStubPerSuperstrip;
   }
+  
+  nCombinations=tracks_eta->size();
+  nTracks=nCombinations;
 }
