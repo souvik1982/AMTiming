@@ -13,8 +13,8 @@ StubMapper::StubMapper(std::string name, double delay)
     t1out_.push_back(-999);
     t2out_.push_back(-999);
     
-    v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 100, 0, 10000));
-    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 100, 0, 10000));
+    v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 100, 0, 1000));
+    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 100, 0, 1000));
   } 
 }
 

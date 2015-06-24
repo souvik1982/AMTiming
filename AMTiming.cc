@@ -171,7 +171,7 @@ int main()
     
     EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs, tracks_eta);
     
-    std::cout<<"=== Event === "<<std::endl;
+    /*std::cout<<"=== Event === "<<std::endl;
     for (unsigned int i=0; i<6; ++i)
     {
       std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
@@ -180,7 +180,7 @@ int main()
     std::cout<<"event.nOutwords = "<<event.nOutwords<<std::endl;
     std::cout<<"event.nCombinations = "<<event.nCombinations<<std::endl;
     std::cout<<"event.nTracks = "<<event.nTracks<<std::endl;
-    std::cout<<"=== ==="<<std::endl;
+    std::cout<<"=== ==="<<std::endl;*/
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
@@ -191,7 +191,7 @@ int main()
       component->computeOutputTimes();
       
       // Printout outputs of this component
-      component->printOutputTimes();
+      // component->printOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp
@@ -209,27 +209,19 @@ int main()
         }
       }
     }
+    
+    if (i_event%1000==0) std::cout<<"Events "<<i_event<<" out of "<<nEvents<<" have been processed."<<std::endl;
+    
   }
   
-  // Draw the histograms
-  // Also produce a HTML summary sheet
-  /*ofstream outfile;
-  outfile.open("AMTimingSummarySheet/AMTimingSummarySheet.html");
-  outfile<<"<html>"<<std::endl;
-  outfile<<"<head>"<<std::endl;
-  outfile<<"<body>"<<std::endl;
-  outfile<<"<h1> AMTiming Summary Sheet </h1>"<<std::endl;
-  outfile<<"<table border='1'>"<<std::endl;
-  outfile<<" <tr>"<<std::endl;
-  outfile<<"  <td>"<<std::endl;
-    
+  // Write component histograms to file
   for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
   {
     Component *component=componentRelations.at(i_comp)->comp_;
     component->writeOutputTimes();
     component->drawOutputTimes();
   }
-  */
+  
   return 0;
   
 }

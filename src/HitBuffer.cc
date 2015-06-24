@@ -19,8 +19,8 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
   t1out_.push_back(-999);
   t2out_.push_back(-999);
   
-  v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";HitBuffer "+name_+" t1out").c_str(), 100, 0, 10000));
-  v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";HitBuffer "+name_+" t2out").c_str(), 100, 0, 10000));
+  v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";HitBuffer "+name_+" t1out").c_str(), 100, 0, 5000));
+  v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";HitBuffer "+name_+" t2out").c_str(), 100, 0, 5000));
 }
 
 bool HitBuffer::setEventCharacteristics(EventCharacteristics *event)

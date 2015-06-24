@@ -14,7 +14,7 @@ DataSource::DataSource(std::string name, double outTime)
     t2out_.push_back(-999);
     
     v_h_t1out_.push_back(0);
-    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 100, 0, 10000));
+    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 100, 0, 1000));
   } 
 }
 
