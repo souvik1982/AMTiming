@@ -15,21 +15,31 @@
 #include "interface/HitBuffer.h"
 #include "interface/CombinationBuilder.h"
 #include "interface/TrackFitter.h"
-
 #include "interface/loader.h"
+#include "interface/CommandLineArguments.h"
 
 void removeSpaces(std::string &input)
 {
   input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+  std::string schematicFilename="Schematic.txt";
+  std::string inputDir;
+  std::string inputFile="tracks.root";
+  
+  // Get command line arguments
+  std::map<std::string, std::string> cmdMap=commandLineArguments(argc, argv);
+  if (cmdMap.find("-schematic")!=cmdMap.end()) schematicFilename=cmdMap["-schematic"];
+  if (cmdMap.find("-inputDir")!=cmdMap.end())  inputDir=cmdMap["-inputDir"];
+  if (cmdMap.find("-inputFile")!=cmdMap.end()) inputFile=cmdMap["-inputFile"];
+  
   std::vector<ComponentRelation*> componentRelations;
   
   // Read the schematic file and store Component Characteristics
   // and the schematic arrangement between components
-  std::ifstream file("Schematic.txt");
+  std::ifstream file(schematicFilename.c_str());
   std::string s;
   getline(file, s);
   while (!file.eof())
@@ -151,7 +161,7 @@ int main()
   
   // Read ROOT event files and iterate
   
-  TFile *eventFile=new TFile("/Users/souvik/AMTrackTrigger/Samples/SLHC/GEN/620_SLHC25p3_results/test1/Neutrino_PU140_tt27_sf1_nz1_pt3_ml5_20150511/tracks.root");
+  TFile *eventFile=new TFile((inputDir+"/"+inputFile).c_str());
   TTree *tree=(TTree*)eventFile->Get("ntupler/tree");
   
   std::vector<float> *stubs_modId=0;
@@ -171,7 +181,18 @@ int main()
     
     EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs, tracks_eta);
     
-    /*std::cout<<"=== Event === "<<std::endl;
+    /*
+    EventCharacteristics event;
+    for (unsigned int i=0; i<6; ++i)
+    {
+      event.nStubs_layer.at(i)=0;
+    }
+    event.nPatterns=0;
+    event.nOutwords=0;
+    event.nCombinations=0;
+    event.nTracks=0;
+    
+    std::cout<<"=== Event === "<<std::endl;
     for (unsigned int i=0; i<6; ++i)
     {
       std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
@@ -180,7 +201,8 @@ int main()
     std::cout<<"event.nOutwords = "<<event.nOutwords<<std::endl;
     std::cout<<"event.nCombinations = "<<event.nCombinations<<std::endl;
     std::cout<<"event.nTracks = "<<event.nTracks<<std::endl;
-    std::cout<<"=== ==="<<std::endl;*/
+    std::cout<<"=== ==="<<std::endl;
+    */
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
@@ -211,15 +233,13 @@ int main()
     }
     
     if (i_event%1000==0) std::cout<<"Events "<<i_event<<" out of "<<nEvents<<" have been processed."<<std::endl;
-    
   }
   
   // Write component histograms to file
   for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
   {
     Component *component=componentRelations.at(i_comp)->comp_;
-    component->writeOutputTimes();
-    component->drawOutputTimes();
+    component->writeHistograms();
   }
   
   return 0;

@@ -2,6 +2,19 @@
 
 #include "../interface/EventCharacteristics.h"
 
+EventCharacteristics::EventCharacteristics()
+{
+  nStubs_layer.at(1)=0;
+  nStubs_layer.at(2)=0;
+  nStubs_layer.at(3)=0;
+  nStubs_layer.at(4)=0;
+  nStubs_layer.at(5)=0;
+  nPatterns=0;
+  nOutwords=0;
+  nCombinations=0;
+  nTracks=0;
+} 
+
 EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs, std::vector<float> *tracks_eta)
 {
   nStubs_layer.at(0)=0;

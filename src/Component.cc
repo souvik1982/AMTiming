@@ -73,6 +73,7 @@ void Component::printOutputTimes()
   std::cout<<" === === "<<std::endl;
 }
 
+/*
 void Component::writeOutputTimes()
 {
   TFile *file=new TFile((name_+".root").c_str(), "recreate");
@@ -86,30 +87,7 @@ void Component::writeOutputTimes()
   }
   file->Close();
 }
-
-void Component::drawOutputTimes()
-{
-  for (unsigned int i=0; i<v_h_t1out_.size(); ++i)
-  { 
-    if (v_h_t1out_.at(i)!=0) 
-    {
-      TCanvas *c=new TCanvas("c", "c", 700, 700);
-      v_h_t1out_.at(i)->Draw();
-      c->SaveAs(("plots/"+std::string(v_h_t1out_.at(i)->GetName())+".png").c_str());
-      delete c; 
-    }
-  }
-  for (unsigned int i=0; i<v_h_t2out_.size(); ++i)
-  { 
-    if (v_h_t2out_.at(i)!=0) 
-    {
-      TCanvas *c=new TCanvas("c", "c", 700, 700);
-      v_h_t2out_.at(i)->Draw();
-      c->SaveAs(("plots/"+std::string(v_h_t2out_.at(i)->GetName())+".png").c_str());
-      delete c;
-    }
-  }
-} 
+*/
 
 void Component::clearValues()
 {

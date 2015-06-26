@@ -19,13 +19,12 @@ class Component
     double get_t2out(unsigned int);
     std::string get_name();
     void printOutputTimes();
-    void writeOutputTimes();
-    void drawOutputTimes();
     
     void clearValues();
     
     virtual bool setEventCharacteristics(EventCharacteristics*) = 0;
     virtual bool computeOutputTimes() = 0;
+    virtual void writeHistograms() = 0;
   
   protected:
     int nInputs_;

@@ -5,7 +5,8 @@
 
 class EventCharacteristics
 {
-  public: 
+  public:
+    EventCharacteristics();
     EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs, std::vector<float> *tracks_eta);
   
   public: 
@@ -14,4 +15,5 @@ class EventCharacteristics
     double nOutwords;
     double nCombinations;
     double nTracks;
+    // std::vector<TH1F*> v_h_nStubs;
 };

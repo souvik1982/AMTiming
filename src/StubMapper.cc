@@ -13,8 +13,8 @@ StubMapper::StubMapper(std::string name, double delay)
     t1out_.push_back(-999);
     t2out_.push_back(-999);
     
-    v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 100, 0, 1000));
-    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 100, 0, 1000));
+    v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 1000, 0, 1000));
+    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
   } 
 }
 
@@ -49,3 +49,14 @@ bool StubMapper::setEventCharacteristics(EventCharacteristics *event)
 {
   return true;
 }
+
+void StubMapper::writeHistograms()
+{
+  TFile *file=new TFile((name_+".root").c_str(), "recreate");
+  for (unsigned int i=0; i<v_h_t1out_.size(); ++i)
+  { 
+    if (v_h_t1out_.at(i)!=0) v_h_t1out_.at(i)->Write();
+    if (v_h_t2out_.at(i)!=0) v_h_t2out_.at(i)->Write();
+  }
+  file->Close();
+} 
