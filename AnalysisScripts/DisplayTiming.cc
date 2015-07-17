@@ -8,8 +8,9 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
-
 #include <string>
+
+#include "BlockDiagram.cc"
 
 bool logScale=true;
 
@@ -18,7 +19,7 @@ void removeSpaces(std::string &input)
   input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
 }
 
-std::string ftoa(double i) 
+std::string ftoa2(double i) 
 {
   char res[10];
   sprintf(res, "%2.2f", i);
@@ -30,7 +31,7 @@ int fixRange(TH1F *h)
 {
   double nBinsHave=h->FindLastBinAbove(0, 1)+1;
   double nEntries=h->GetEntries();
-  int rebin=-1;  
+  int rebin=0;  
   if (nEntries>0 && nBinsHave>0)
   {
     rebin=int(200.*nBinsHave/nEntries);
@@ -52,7 +53,7 @@ void makeCanvas(TH1F *h1, std::string name_s, std::string componentType, std::st
   h1->Draw("");
   TLegend *leg=new TLegend(0.6, 0.7, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("("+ftoa(h1->GetMean())+", "+ftoa(h1->GetRMS())+") "+units).c_str());
+  leg->AddEntry(h1, ("("+ftoa2(h1->GetMean())+", "+ftoa2(h1->GetRMS())+") "+units).c_str());
   leg->Draw();
   c->SaveAs(("c_"+name_s+".png").c_str());
 }
@@ -71,17 +72,20 @@ void makeCanvas(TH1F *h1, TH1F *h2, std::string name_s, std::string componentTyp
   h2->Draw("same");
   TLegend *leg=new TLegend(0.6, 0.7, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("t1out ("+ftoa(h1->GetMean())+", "+ftoa(h1->GetRMS())+") "+units).c_str());
-  leg->AddEntry(h2, ("t2out ("+ftoa(h2->GetMean())+", "+ftoa(h2->GetRMS())+") "+units).c_str());
+  leg->AddEntry(h1, ("t1out ("+ftoa2(h1->GetMean())+", "+ftoa2(h1->GetRMS())+") "+units).c_str());
+  leg->AddEntry(h2, ("t2out ("+ftoa2(h2->GetMean())+", "+ftoa2(h2->GetRMS())+") "+units).c_str());
   leg->Draw();
   
   c->SaveAs(("c_"+name_s+".png").c_str());
 }
 
-void DisplayTiming()
+void DisplayTiming(std::string title)
 {
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
+  
+  BlockDiagram blockDiagram_0p50(0.5, title);
+  BlockDiagram blockDiagram_0p999(0.999, title);
   
   ofstream outfile;
   outfile.open("AMTimingAnalysis.html");
@@ -89,10 +93,10 @@ void DisplayTiming()
   outfile<<"<head>"<<std::endl;
   outfile<<"</head>"<<std::endl;
   outfile<<"<body>"<<std::endl;
-  outfile<<"<h1 align='center'> AM Mezzanine Board Timing Analysis </h1>"<<std::endl;
+  outfile<<"<h1 align='center'> AM Mezzanine Board Timing Dashboard </h1>"<<std::endl;
   outfile<<"<table border='1'>"<<std::endl;
   
-  std::ifstream file("../Schematic.txt");
+  std::ifstream file("Schematic.txt");
   std::string s;
   getline(file, s);
   while (!file.eof())
@@ -187,6 +191,20 @@ void DisplayTiming()
       outfile<<"      </table>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_0", kAzure+6, 0, h_t2out_ds_0);
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_1", kAzure+6, 0, h_t2out_ds_1);
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_2", kAzure+6, 0, h_t2out_ds_2);
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_3", kAzure+6, 0, h_t2out_ds_3);
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_4", kAzure+6, 0, h_t2out_ds_4);
+      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_5", kAzure+6, 0, h_t2out_ds_5);
+      
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_0", kAzure+6, 0, h_t2out_ds_0);
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_1", kAzure+6, 0, h_t2out_ds_1);
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_2", kAzure+6, 0, h_t2out_ds_2);
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_3", kAzure+6, 0, h_t2out_ds_3);
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_4", kAzure+6, 0, h_t2out_ds_4);
+      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_5", kAzure+6, 0, h_t2out_ds_5);
     }
     
     if (component_s.find("StubMapper")!=std::string::npos)
@@ -247,6 +265,20 @@ void DisplayTiming()
       outfile<<"      </table>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_0", kGreen, h_t1out_sm_0, h_t2out_sm_0);
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_1", kGreen, h_t1out_sm_1, h_t2out_sm_1);
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_2", kGreen, h_t1out_sm_2, h_t2out_sm_2);
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_3", kGreen, h_t1out_sm_3, h_t2out_sm_3);
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_4", kGreen, h_t1out_sm_4, h_t2out_sm_4);
+      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_5", kGreen, h_t1out_sm_5, h_t2out_sm_5);
+      
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_0", kGreen, h_t1out_sm_0, h_t2out_sm_0);
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_1", kGreen, h_t1out_sm_1, h_t2out_sm_1);
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_2", kGreen, h_t1out_sm_2, h_t2out_sm_2);
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_3", kGreen, h_t1out_sm_3, h_t2out_sm_3);
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_4", kGreen, h_t1out_sm_4, h_t2out_sm_4);
+      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_5", kGreen, h_t1out_sm_5, h_t2out_sm_5);
     }
     
     if (component_s.find("AssociativeMemory")!=std::string::npos)
@@ -278,6 +310,9 @@ void DisplayTiming()
       outfile<<"      <img src='"<<("c_"+name_s+".png")<<"'/>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("AssociativeMemory", kCyan, h_t1out_am, h_t2out_am);
+      blockDiagram_0p999.addComponent("AssociativeMemory", kCyan, h_t1out_am, h_t2out_am);
     }
     
     if (component_s.find("HitBuffer")!=std::string::npos)
@@ -311,6 +346,9 @@ void DisplayTiming()
       outfile<<"      <img src='"<<("c_"+name_s+".png")<<"'/>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("HitBuffer", kRed, h_t1out_hb, h_t2out_hb);
+      blockDiagram_0p999.addComponent("HitBuffer", kRed, h_t1out_hb, h_t2out_hb);
     }
     
     if (component_s.find("CombinationBuilder")!=std::string::npos)
@@ -342,6 +380,9 @@ void DisplayTiming()
       outfile<<"      <img src='"<<("c_"+name_s+".png")<<"'/>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("CombinationBuilder", kOrange, h_t1out_cb, h_t2out_cb);
+      blockDiagram_0p999.addComponent("CombinationBuilder", kOrange, h_t1out_cb, h_t2out_cb);
     }
     
     if (component_s.find("TrackFitter")!=std::string::npos)
@@ -373,10 +414,23 @@ void DisplayTiming()
       outfile<<"      <img src='"<<("c_"+name_s+".png")<<"'/>"<<std::endl;
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
+      
+      blockDiagram_0p50.addComponent("TrackFitter", kViolet, h_t1out_tf, h_t2out_tf);
+      blockDiagram_0p999.addComponent("TrackFitter", kViolet, h_t1out_tf, h_t2out_tf);
     }
   }
   
   outfile<<"</table>"<<std::endl;
+  
+  blockDiagram_0p50.drawCanvas();
+  blockDiagram_0p999.drawCanvas();
+  
+  outfile<<" <hr/> "<<std::endl;
+  outfile<<" <h1 align='center'> Summary Block Diagram </h2>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.500.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.999.png'/>"<<std::endl;
+  outfile<<" <hr/> "<<std::endl;
+  
   outfile<<"</body>"<<std::endl;
   outfile<<"</html>"<<std::endl;
 }

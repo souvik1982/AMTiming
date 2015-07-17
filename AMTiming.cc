@@ -178,7 +178,6 @@ int main(int argc, char *argv[])
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     tree->GetEntry(i_event);
-    
     EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs, tracks_eta);
     
     /*
