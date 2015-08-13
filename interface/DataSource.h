@@ -10,6 +10,8 @@ class DataSource: public Component
     bool setEventCharacteristics(EventCharacteristics*);
     bool computeOutputTimes();
     void writeHistograms();
+    
+    double getOutTime(){return outTime_;}
   
   private:
     std::array<double, 6> nStubs_layer_;

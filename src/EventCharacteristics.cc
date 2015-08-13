@@ -4,6 +4,7 @@
 
 EventCharacteristics::EventCharacteristics()
 {
+  nStubs_layer.at(0)=0;
   nStubs_layer.at(1)=0;
   nStubs_layer.at(2)=0;
   nStubs_layer.at(3)=0;

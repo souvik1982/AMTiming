@@ -51,9 +51,13 @@ void makeCanvas(TH1F *h1, std::string name_s, std::string componentType, std::st
   if (logScale) c->SetLogy();
   h1->SetTitle(("; "+componentType+" "+name_s+" ("+units+")").c_str());
   h1->Draw("");
+  double perc[2]={0.95, 0.999};
+  double values[2];
+  h1->GetQuantiles(2, values, perc);
   TLegend *leg=new TLegend(0.6, 0.7, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("("+ftoa2(h1->GetMean())+", "+ftoa2(h1->GetRMS())+") "+units).c_str());
+  // leg->AddEntry(h1, ("("+ftoa2(h1->GetMean())+", "+ftoa2(h1->GetRMS())+") "+units).c_str());
+  leg->AddEntry(h1, ("99.9 perc: "+ftoa2(values[1])+" "+units).c_str());
   leg->Draw();
   c->SaveAs(("c_"+name_s+".png").c_str());
 }
@@ -426,9 +430,31 @@ void DisplayTiming(std::string title)
   blockDiagram_0p999.drawCanvas();
   
   outfile<<" <hr/> "<<std::endl;
-  outfile<<" <h1 align='center'> Summary Block Diagram </h2>"<<std::endl;
+  outfile<<" <h1 align='center'> Summary Block Diagram </h1>"<<std::endl;
   outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.500.png'/>"<<std::endl;
   outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.999.png'/>"<<std::endl;
+  outfile<<" <hr/> "<<std::endl;
+  
+  TFile *f_fifo=new TFile("fifo1.root");
+  TH1F *h_FIFO_0=(TH1F*)f_fifo->Get("h_FIFO_0");
+  TH1F *h_FIFO_1=(TH1F*)f_fifo->Get("h_FIFO_1");
+  TH1F *h_FIFO_2=(TH1F*)f_fifo->Get("h_FIFO_2");
+  TH1F *h_FIFO_3=(TH1F*)f_fifo->Get("h_FIFO_3");
+  TH1F *h_FIFO_4=(TH1F*)f_fifo->Get("h_FIFO_4");
+  TH1F *h_FIFO_5=(TH1F*)f_fifo->Get("h_FIFO_5");
+  makeCanvas(h_FIFO_0, "fifo1_0", "FIFO Layer 0 Depth", "", kBlack);
+  makeCanvas(h_FIFO_1, "fifo1_1", "FIFO Layer 1 Depth", "", kBlack);
+  makeCanvas(h_FIFO_2, "fifo1_2", "FIFO Layer 2 Depth", "", kBlack);
+  makeCanvas(h_FIFO_3, "fifo1_3", "FIFO Layer 3 Depth", "", kBlack);
+  makeCanvas(h_FIFO_4, "fifo1_4", "FIFO Layer 4 Depth", "", kBlack);
+  makeCanvas(h_FIFO_5, "fifo1_5", "FIFO Layer 5 Depth", "", kBlack);
+  outfile<<" <h1 align='center'> AM FIFO Depth Analysis </h1>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_0.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_1.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_2.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_3.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_4.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='c_fifo1_5.png'/>"<<std::endl;
   outfile<<" <hr/> "<<std::endl;
   
   outfile<<"</body>"<<std::endl;

@@ -42,7 +42,7 @@ class BlockDiagram
       {
         t1out_median_.push_back(0);
       }
-      h_t2out->GetQuantiles(3, t2out_perc, perc);
+      h_t2out->GetQuantiles(1, t2out_perc, perc);
       t2out_median_.push_back(t2out_perc[0]);
     }
     
