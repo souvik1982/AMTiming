@@ -15,8 +15,8 @@ AssociativeMemory::AssociativeMemory(std::string name, double delay, double inTi
     
     v_h_nStubs_.push_back(new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
   
-    v_h_t1out_term1_.push_back(new TH1F(("h_t1out_term1_"+name_).c_str(), ("; AssociativeMemory "+name_+" t1out term1").c_str(), 10000, 0, 10000));
-    v_h_t1out_term2_.push_back(new TH1F(("h_t1out_term2_"+name_).c_str(), ("; AssociativeMemory "+name_+" t1out term2").c_str(), 10000, 0, 10000));
+    v_h_t1out_term1_.push_back(new TH1F(("h_t1out_term1_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term1").c_str(), 10000, 0, 10000));
+    v_h_t1out_term2_.push_back(new TH1F(("h_t1out_term2_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term2").c_str(), 10000, 0, 10000));
   }
   t1out_.push_back(-999);
   t2out_.push_back(-999);

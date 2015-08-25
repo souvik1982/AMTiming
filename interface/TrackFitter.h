@@ -9,6 +9,8 @@ class TrackFitter: public Component
     bool computeOutputTimes();
     void writeHistograms();
     
+    double getInTime(){return inTime_;}
+    
   private:
   
     double inTime_, outTime_, delay_;

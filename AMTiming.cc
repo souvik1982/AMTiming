@@ -149,10 +149,10 @@ int main(int argc, char *argv[])
       double inTime=atof(inTime_s.c_str());
       double outTime=atof(outTime_s.c_str());
       double delay=atof(delay_s.c_str());
-      TrackFitter *cb=new TrackFitter(name_s, inTime, outTime, delay);
+      TrackFitter *tf=new TrackFitter(name_s, inTime, outTime, delay);
       ComponentRelation *compRelation=new ComponentRelation();
       compRelation->extractComponentRelation(s);
-      compRelation->comp_=cb;
+      compRelation->comp_=tf;
       componentRelations.push_back(compRelation);
       std::cout<<"Initialized TrackFitter "<<name_s<<std::endl;
     } 
@@ -175,15 +175,27 @@ int main(int argc, char *argv[])
   tree->SetBranchAddress("AMTTTracks_eta", &(tracks_eta));
   
   // Book histograms for the FIFO depth
-  TH1F *h_FIFO_0=new TH1F("h_FIFO_0", "Depth of FIFO 0", 500, 0, 300);
-  TH1F *h_FIFO_1=new TH1F("h_FIFO_1", "Depth of FIFO 1", 500, 0, 300);
-  TH1F *h_FIFO_2=new TH1F("h_FIFO_2", "Depth of FIFO 2", 500, 0, 300);
-  TH1F *h_FIFO_3=new TH1F("h_FIFO_3", "Depth of FIFO 3", 500, 0, 300);
-  TH1F *h_FIFO_4=new TH1F("h_FIFO_4", "Depth of FIFO 4", 500, 0, 300);
-  TH1F *h_FIFO_5=new TH1F("h_FIFO_5", "Depth of FIFO 5", 500, 0, 300);
+  TH1F *h_AM_FIFO_0=new TH1F("h_AM_FIFO_0", "Depth of AM FIFO 0", 500, 0, 300);
+  TH1F *h_AM_FIFO_1=new TH1F("h_AM_FIFO_1", "Depth of AM FIFO 1", 500, 0, 300);
+  TH1F *h_AM_FIFO_2=new TH1F("h_AM_FIFO_2", "Depth of AM FIFO 2", 500, 0, 300);
+  TH1F *h_AM_FIFO_3=new TH1F("h_AM_FIFO_3", "Depth of AM FIFO 3", 500, 0, 300);
+  TH1F *h_AM_FIFO_4=new TH1F("h_AM_FIFO_4", "Depth of AM FIFO 4", 500, 0, 300);
+  TH1F *h_AM_FIFO_5=new TH1F("h_AM_FIFO_5", "Depth of AM FIFO 5", 500, 0, 300);
   DataSource *ds1=(DataSource*)componentRelations.at(0)->comp_;
   AssociativeMemory *am1=(AssociativeMemory*)componentRelations.at(2)->comp_;
-  double ratio=1.-(ds1->getOutTime()/am1->getInTime());
+  double amRatio=1.-(ds1->getOutTime()/am1->getInTime());
+  if (amRatio<0 || amRatio>1) amRatio=0;
+  
+  TH1F *h_CB_FIFO=new TH1F("h_CB_FIFO", "Depth of CB FIFO", 500, 0, 300);
+  HitBuffer *hb1=(HitBuffer*)componentRelations.at(3)->comp_;
+  CombinationBuilder *cb1=(CombinationBuilder*)componentRelations.at(4)->comp_;
+  double cbRatio=1.-(hb1->getOutTime()/cb1->getInTime());
+  if (cbRatio<0 || cbRatio>1) cbRatio=0;
+  
+  TH1F *h_TF_FIFO=new TH1F("h_TF_FIFO", "Depth of TF FIFO", 500, 0, 300);
+  TrackFitter *tf1=(TrackFitter*)componentRelations.at(5)->comp_;
+  double tfRatio=1.-(cb1->getOutTime()/tf1->getInTime());
+  if (tfRatio<0 || tfRatio>1) tfRatio=0;
   
   unsigned int nEvents=tree->GetEntries();
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
@@ -242,24 +254,28 @@ int main(int argc, char *argv[])
       }
     }
     
-    // Calculate length of FIFO before AM
-    h_FIFO_0->Fill(ratio*double(event.nStubs_layer.at(0)));
-    h_FIFO_1->Fill(ratio*double(event.nStubs_layer.at(1)));
-    h_FIFO_2->Fill(ratio*double(event.nStubs_layer.at(2)));
-    h_FIFO_3->Fill(ratio*double(event.nStubs_layer.at(3)));
-    h_FIFO_4->Fill(ratio*double(event.nStubs_layer.at(4)));
-    h_FIFO_5->Fill(ratio*double(event.nStubs_layer.at(5)));
+    // Calculate length of FIFOs
+    h_AM_FIFO_0->Fill(amRatio*double(event.nStubs_layer.at(0)));
+    h_AM_FIFO_1->Fill(amRatio*double(event.nStubs_layer.at(1)));
+    h_AM_FIFO_2->Fill(amRatio*double(event.nStubs_layer.at(2)));
+    h_AM_FIFO_3->Fill(amRatio*double(event.nStubs_layer.at(3)));
+    h_AM_FIFO_4->Fill(amRatio*double(event.nStubs_layer.at(4)));
+    h_AM_FIFO_5->Fill(amRatio*double(event.nStubs_layer.at(5)));
+    h_CB_FIFO->Fill(cbRatio*double(event.nOutwords));
+    h_TF_FIFO->Fill(tfRatio*double(event.nCombinations));
     
     if (i_event%1000==0) std::cout<<"Events "<<i_event<<" out of "<<nEvents<<" have been processed."<<std::endl;
   }
   
-  TFile *f_FIFO=new TFile("fifo1.root", "recreate");
-  h_FIFO_0->Write();
-  h_FIFO_1->Write();
-  h_FIFO_2->Write();
-  h_FIFO_3->Write();
-  h_FIFO_4->Write();
-  h_FIFO_5->Write();
+  TFile *f_FIFO=new TFile("fifos.root", "recreate");
+  h_AM_FIFO_0->Write();
+  h_AM_FIFO_1->Write();
+  h_AM_FIFO_2->Write();
+  h_AM_FIFO_3->Write();
+  h_AM_FIFO_4->Write();
+  h_AM_FIFO_5->Write();
+  h_CB_FIFO->Write();
+  h_TF_FIFO->Write();
   f_FIFO->Write();
   
   // Write component histograms to file

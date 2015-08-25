@@ -9,6 +9,9 @@ class CombinationBuilder: public Component
     bool computeOutputTimes();
     void writeHistograms();
     
+    double getInTime(){return inTime_;}
+    double getOutTime(){return outTime_;}
+    
   private:
   
     double inTime_, outTime_, delay_;

@@ -9,6 +9,8 @@ class HitBuffer: public Component
     bool computeOutputTimes();
     void writeHistograms();
     
+    double getOutTime(){return outTime_;}
+    
   private:
   
     double inTime_, procTime_, outTime_, delay_;
