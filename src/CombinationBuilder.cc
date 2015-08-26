@@ -17,15 +17,15 @@ CombinationBuilder::CombinationBuilder(std::string name, double inTime, double o
   v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";CombinationBuilder "+name_+" t1out").c_str(), 20000, 0, 20000));
   v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";CombinationBuilder "+name_+" t2out").c_str(), 20000, 0, 20000));
   
-  h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 10000, 0, 10000);
+  h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nOutwords", 10000, 0, 10000);
   h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10000, 0, 10000);
 }
 
 bool CombinationBuilder::setEventCharacteristics(EventCharacteristics *event)
 {
-  nPatterns_=event->nPatterns;
+  nOutwords_=event->nOutwords;
   nCombinations_=event->nCombinations;
-  h_nPatterns_->Fill(nPatterns_);
+  h_nOutwords_->Fill(nOutwords_);
   h_nCombinations_->Fill(nCombinations_);
   return true;
 }
@@ -34,12 +34,12 @@ bool CombinationBuilder::computeOutputTimes()
 {
   if (delay_>0 && inTime_>0 && outTime_>0)
   {
-    if (nPatterns_!=-999 && nCombinations_!=-999)
+    if (nOutwords_!=-999 && nCombinations_!=-999)
     {
       if (t1in_.at(0)!=-999 && t2in_.at(0)!=-999)
       {
         t1out_.at(0)=t1in_.at(0)+delay_;
-        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+nPatterns_*inTime_, t1out_.at(0)+(nCombinations_+1)*outTime_));
+        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+nOutwords_*inTime_, t1out_.at(0)+(nCombinations_+1)*outTime_));
         
         v_h_t1out_.at(0)->Fill(t1out_.at(0));
         v_h_t2out_.at(0)->Fill(t2out_.at(0));
@@ -52,7 +52,7 @@ bool CombinationBuilder::computeOutputTimes()
     }
     else
     {
-      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nPatterns = "<<nPatterns_<<", and nCombinations = "<<nCombinations_<<std::endl;
+      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nOutwords = "<<nOutwords_<<", and nCombinations = "<<nCombinations_<<std::endl;
       return false;
     }
   }
@@ -76,7 +76,7 @@ void CombinationBuilder::writeHistograms()
     if (v_h_t1out_.at(i)!=0) v_h_t1out_.at(i)->Write();
     if (v_h_t2out_.at(i)!=0) v_h_t2out_.at(i)->Write();
   }
-  h_nPatterns_->Write();
+  h_nOutwords_->Write();
   h_nCombinations_->Write();
   file->Close();
 } 

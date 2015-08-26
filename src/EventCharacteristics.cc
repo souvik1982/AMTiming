@@ -46,17 +46,17 @@ EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std:
   {
     int nMaxStubPerSuperstrip=0;
     double nCombRoad=1;
-    /*
     for (unsigned int i_superstrip=0; i_superstrip<roads_stubRefs->at(i_road).size(); ++i_superstrip)
     {
       unsigned int nStubs=roads_stubRefs->at(i_road).at(i_superstrip).size();
       if (nStubs>nMaxStubPerSuperstrip) nMaxStubPerSuperstrip=nStubs;
       if (nStubs>0) nCombRoad*=double(nStubs);
     }
-    */
-    // nOutwords+=nMaxStubPerSuperstrip;
-    nOutwords+=1;
+    nOutwords+=nMaxStubPerSuperstrip;
     nCombinations+=nCombRoad;
+    // For bypass
+    nOutwords+=1;
+    nCombinations=1;
   }
   
   nTracks=tracks_eta->size();
