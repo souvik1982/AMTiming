@@ -4,6 +4,7 @@
 
 StubMapper::StubMapper(std::string name, double delay)
 {
+  type_="StubMapper";
   name_=name;
   delay_=delay;
   for (unsigned int i=0; i<6; ++i)
@@ -45,11 +46,6 @@ bool StubMapper::computeOutputTimes()
   return true;
 }
    
-bool StubMapper::setEventCharacteristics(EventCharacteristics *event)
-{
-  return true;
-}
-
 void StubMapper::writeHistograms()
 {
   TFile *file=new TFile((name_+".root").c_str(), "recreate");

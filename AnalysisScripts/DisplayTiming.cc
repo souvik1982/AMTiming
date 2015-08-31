@@ -29,6 +29,14 @@ std::string ftoa2(double i)
   return ret;
 }
 
+/*std::string ftoa3(double i) 
+{
+  char res[10];
+  sprintf(res, "%2.3f", i);
+  std::string ret(res);
+  return ret;
+}*/
+
 int fixRange(TH1F *h)
 {
   double nBinsHave=h->FindLastBinAbove(0, 1)+1;
@@ -44,7 +52,7 @@ int fixRange(TH1F *h)
   return rebin;
 }
 
-void makeCanvas(TH1F *h1, std::string name_s, std::string componentType, std::string units="", int color=kBlue)
+void makeCanvas(TH1F *h1, double percentile, std::string name_s, std::string componentType, std::string units="", int color=kBlue)
 {
   h1->SetLineColor(color);
   fixRange(h1);
@@ -53,19 +61,19 @@ void makeCanvas(TH1F *h1, std::string name_s, std::string componentType, std::st
   if (logScale) c->SetLogy();
   h1->SetTitle(("; "+componentType+" "+name_s+" ("+units+")").c_str());
   h1->Draw("");
-  double perc[2]={0.95, 0.999};
-  double values[2];
-  h1->GetQuantiles(2, values, perc);
+  double perc[1]={percentile};
+  double values[1];
+  h1->GetQuantiles(1, values, perc);
   TLegend *leg=new TLegend(0.6, 0.7, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("99.9 perc: "+ftoa2(values[1])+" "+units).c_str());
+  leg->AddEntry(h1, (ftoa3(percentile)+" perc: "+ftoa2(values[0])+" "+units).c_str());
   leg->Draw();
-  TArrow *arrow=new TArrow(values[1], h1->GetMaximum()*0.5, values[1], 0, 0.05, "|>");
+  TArrow *arrow=new TArrow(values[0], h1->GetMaximum()*0.5, values[0], 0, 0.05, "|>");
   arrow->Draw();
   c->SaveAs(("c_"+name_s+".png").c_str());
 }
 
-void makeCanvas(TH1F *h1, TH1F *h2, std::string name_s, std::string componentType, std::string units="")
+void makeCanvas(TH1F *h1, TH1F *h2, double percentile, std::string name_s, std::string componentType, std::string units="")
 {
   h2->SetLineColor(kGreen+2);
   int rebin=fixRange(h2);
@@ -77,25 +85,25 @@ void makeCanvas(TH1F *h1, TH1F *h2, std::string name_s, std::string componentTyp
   h2->Draw("");
   h1->Draw("same");
   h2->Draw("same");
-  double perc1[2]={0.95, 0.999};
-  double values1[2];
-  h1->GetQuantiles(2, values1, perc1);
-  double perc2[2]={0.95, 0.999};
-  double values2[2];
-  h2->GetQuantiles(2, values2, perc2);
+  double perc1[1]={percentile};
+  double values1[1];
+  h1->GetQuantiles(1, values1, perc1);
+  double perc2[1]={percentile};
+  double values2[1];
+  h2->GetQuantiles(1, values2, perc2);
   TLegend *leg=new TLegend(0.6, 0.7, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("t1out 99.9 perc: "+ftoa2(values1[1])+" "+units).c_str());
-  leg->AddEntry(h1, ("t2out 99.9 perc: "+ftoa2(values2[1])+" "+units).c_str());
+  leg->AddEntry(h1, ("t1out "+ftoa3(percentile)+" perc: "+ftoa2(values1[0])+" "+units).c_str());
+  leg->AddEntry(h1, ("t2out "+ftoa3(percentile)+" perc: "+ftoa2(values2[0])+" "+units).c_str());
   leg->Draw();
-  TArrow *arrow1=new TArrow(values1[1], h1->GetMaximum()*0.5, values1[1], 0, 0.05, "|>");
+  TArrow *arrow1=new TArrow(values1[0], h1->GetMaximum()*0.5, values1[0], 0, 0.05, "|>");
   arrow1->SetLineColor(kBlue); arrow1->Draw();
-  TArrow *arrow2=new TArrow(values2[1], h2->GetMaximum()*0.5, values2[1], 0, 0.05, "|>");
+  TArrow *arrow2=new TArrow(values2[0], h2->GetMaximum()*0.5, values2[0], 0, 0.05, "|>");
   arrow2->SetLineColor(kGreen+2); arrow2->Draw();
   c->SaveAs(("c_"+name_s+".png").c_str());
 }
 
-TCanvas* makeCanvasForStack(TH1F *h1, std::string name_s, std::string componentType, int &rebin, std::string units="", int color=kBlue)
+TCanvas* makeCanvasForStack(TH1F *h1, double percentile, std::string name_s, std::string componentType, int &rebin, std::string units="", int color=kBlue)
 {
   h1->SetLineColor(color);
   rebin=fixRange(h1);
@@ -104,27 +112,26 @@ TCanvas* makeCanvasForStack(TH1F *h1, std::string name_s, std::string componentT
   if (logScale) c->SetLogy();
   h1->SetTitle(("; "+componentType+" "+name_s+" ("+units+")").c_str());
   h1->Draw("");
-  double perc[2]={0.95, 0.999};
-  double values[2];
-  h1->GetQuantiles(2, values, perc);
+  double perc[1]={percentile};
+  double values[1];
+  h1->GetQuantiles(1, values, perc);
   TLegend *leg=new TLegend(0.6, 0.8, 0.89, 0.89);
   leg->SetBorderSize(0);
-  leg->AddEntry(h1, ("99.9 perc: "+ftoa2(values[1])+" "+units).c_str());
+  leg->AddEntry(h1, (ftoa3(percentile)+" perc: "+ftoa2(values[0])+" "+units).c_str());
   leg->Draw();
-  TArrow *arrow=new TArrow(values[1], h1->GetMaximum()*0.5, values[1], 0, 0.05, "|>");
+  TArrow *arrow=new TArrow(values[0], h1->GetMaximum()*0.5, values[0], 0, 0.05, "|>");
   arrow->Draw();
   c->SaveAs(("c_"+name_s+".png").c_str());
   
   return c;
 }
 
-void DisplayTiming(std::string title)
+void DisplayTiming(std::string title, std::string schematicFileName, double percentile)
 {
   gROOT->SetStyle("Plain");
   gStyle->SetOptStat(0);
   
-  BlockDiagram blockDiagram_0p50(0.5, title);
-  BlockDiagram blockDiagram_0p999(0.999, title);
+  BlockDiagram blockDiagram(percentile, title);
   
   ofstream outfile;
   outfile.open("AMTimingAnalysis.html");
@@ -135,7 +142,7 @@ void DisplayTiming(std::string title)
   outfile<<"<h1 align='center'> AM Mezzanine Board Timing Dashboard </h1>"<<std::endl;
   outfile<<"<table border='1'>"<<std::endl;
   
-  std::ifstream file("Schematic.txt");
+  std::ifstream file(schematicFileName.c_str());
   std::string s;
   getline(file, s);
   while (!file.eof())
@@ -166,19 +173,19 @@ void DisplayTiming(std::string title)
       TH1F *h_nStubs_ds_4=(TH1F*)ds->Get(("h_nStubs_"+name_s+"_4").c_str());
       TH1F *h_nStubs_ds_5=(TH1F*)ds->Get(("h_nStubs_"+name_s+"_5").c_str());
       
-      makeCanvas(h_t2out_ds_0, name_s+"_0", "Data Source", "ns");
-      makeCanvas(h_t2out_ds_1, name_s+"_1", "Data Source", "ns");
-      makeCanvas(h_t2out_ds_2, name_s+"_2", "Data Source", "ns");
-      makeCanvas(h_t2out_ds_3, name_s+"_3", "Data Source", "ns");
-      makeCanvas(h_t2out_ds_4, name_s+"_4", "Data Source", "ns");
-      makeCanvas(h_t2out_ds_5, name_s+"_5", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_0, percentile, name_s+"_0", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_1, percentile, name_s+"_1", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_2, percentile, name_s+"_2", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_3, percentile, name_s+"_3", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_4, percentile, name_s+"_4", "Data Source", "ns");
+      makeCanvas(h_t2out_ds_5, percentile, name_s+"_5", "Data Source", "ns");
       
-      makeCanvas(h_nStubs_ds_0, name_s+"_nStubs_0", "Stub Occupancy", "", kRed);
-      makeCanvas(h_nStubs_ds_1, name_s+"_nStubs_1", "Stub Occupancy", "", kRed);
-      makeCanvas(h_nStubs_ds_2, name_s+"_nStubs_2", "Stub Occupancy", "", kRed);
-      makeCanvas(h_nStubs_ds_3, name_s+"_nStubs_3", "Stub Occupancy", "", kRed);
-      makeCanvas(h_nStubs_ds_4, name_s+"_nStubs_4", "Stub Occupancy", "", kRed);
-      makeCanvas(h_nStubs_ds_5, name_s+"_nStubs_5", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_0, percentile, name_s+"_nStubs_0", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_1, percentile, name_s+"_nStubs_1", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_2, percentile, name_s+"_nStubs_2", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_3, percentile, name_s+"_nStubs_3", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_4, percentile, name_s+"_nStubs_4", "Stub Occupancy", "", kRed);
+      makeCanvas(h_nStubs_ds_5, percentile, name_s+"_nStubs_5", "Stub Occupancy", "", kRed);
       
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -231,19 +238,12 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_0", kAzure+6, 0, h_t2out_ds_0);
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_1", kAzure+6, 0, h_t2out_ds_1);
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_2", kAzure+6, 0, h_t2out_ds_2);
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_3", kAzure+6, 0, h_t2out_ds_3);
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_4", kAzure+6, 0, h_t2out_ds_4);
-      blockDiagram_0p50.addComponent("DataSource_"+name_s+"_5", kAzure+6, 0, h_t2out_ds_5);
-      
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_0", kAzure+6, 0, h_t2out_ds_0);
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_1", kAzure+6, 0, h_t2out_ds_1);
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_2", kAzure+6, 0, h_t2out_ds_2);
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_3", kAzure+6, 0, h_t2out_ds_3);
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_4", kAzure+6, 0, h_t2out_ds_4);
-      blockDiagram_0p999.addComponent("DataSource_"+name_s+"_5", kAzure+6, 0, h_t2out_ds_5);
+      blockDiagram.addComponent("DataSource_"+name_s+"_0", kAzure+6, 0, h_t2out_ds_0);
+      blockDiagram.addComponent("DataSource_"+name_s+"_1", kAzure+6, 0, h_t2out_ds_1);
+      blockDiagram.addComponent("DataSource_"+name_s+"_2", kAzure+6, 0, h_t2out_ds_2);
+      blockDiagram.addComponent("DataSource_"+name_s+"_3", kAzure+6, 0, h_t2out_ds_3);
+      blockDiagram.addComponent("DataSource_"+name_s+"_4", kAzure+6, 0, h_t2out_ds_4);
+      blockDiagram.addComponent("DataSource_"+name_s+"_5", kAzure+6, 0, h_t2out_ds_5);
     }
     
     if (component_s.find("StubMapper")!=std::string::npos)
@@ -267,12 +267,12 @@ void DisplayTiming(std::string title)
       TH1F *h_t2out_sm_4=(TH1F*)sm->Get(("h_t2out_"+name_s+"_4").c_str());
       TH1F *h_t2out_sm_5=(TH1F*)sm->Get(("h_t2out_"+name_s+"_5").c_str());
       
-      makeCanvas(h_t1out_sm_0, h_t2out_sm_0, name_s+"_0", "StubMapper", "ns");
-      makeCanvas(h_t1out_sm_1, h_t2out_sm_1, name_s+"_1", "StubMapper", "ns");
-      makeCanvas(h_t1out_sm_2, h_t2out_sm_2, name_s+"_2", "StubMapper", "ns");
-      makeCanvas(h_t1out_sm_3, h_t2out_sm_3, name_s+"_3", "StubMapper", "ns");
-      makeCanvas(h_t1out_sm_4, h_t2out_sm_4, name_s+"_4", "StubMapper", "ns");
-      makeCanvas(h_t1out_sm_5, h_t2out_sm_5, name_s+"_5", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_0, h_t2out_sm_0, percentile, name_s+"_0", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_1, h_t2out_sm_1, percentile, name_s+"_1", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_2, h_t2out_sm_2, percentile, name_s+"_2", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_3, h_t2out_sm_3, percentile, name_s+"_3", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_4, h_t2out_sm_4, percentile, name_s+"_4", "StubMapper", "ns");
+      makeCanvas(h_t1out_sm_5, h_t2out_sm_5, percentile, name_s+"_5", "StubMapper", "ns");
       
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -305,19 +305,12 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_0", kGreen, h_t1out_sm_0, h_t2out_sm_0);
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_1", kGreen, h_t1out_sm_1, h_t2out_sm_1);
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_2", kGreen, h_t1out_sm_2, h_t2out_sm_2);
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_3", kGreen, h_t1out_sm_3, h_t2out_sm_3);
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_4", kGreen, h_t1out_sm_4, h_t2out_sm_4);
-      blockDiagram_0p50.addComponent("StubMapper_"+name_s+"_5", kGreen, h_t1out_sm_5, h_t2out_sm_5);
-      
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_0", kGreen, h_t1out_sm_0, h_t2out_sm_0);
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_1", kGreen, h_t1out_sm_1, h_t2out_sm_1);
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_2", kGreen, h_t1out_sm_2, h_t2out_sm_2);
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_3", kGreen, h_t1out_sm_3, h_t2out_sm_3);
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_4", kGreen, h_t1out_sm_4, h_t2out_sm_4);
-      blockDiagram_0p999.addComponent("StubMapper_"+name_s+"_5", kGreen, h_t1out_sm_5, h_t2out_sm_5);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_0", kGreen, h_t1out_sm_0, h_t2out_sm_0);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_1", kGreen, h_t1out_sm_1, h_t2out_sm_1);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_2", kGreen, h_t1out_sm_2, h_t2out_sm_2);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_3", kGreen, h_t1out_sm_3, h_t2out_sm_3);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_4", kGreen, h_t1out_sm_4, h_t2out_sm_4);
+      blockDiagram.addComponent("StubMapper_"+name_s+"_5", kGreen, h_t1out_sm_5, h_t2out_sm_5);
     }
     
     if (component_s.find("AssociativeMemory")!=std::string::npos)
@@ -346,7 +339,7 @@ void DisplayTiming(std::string title)
       TH1F *h_t1out_term2_am_5=(TH1F*)am->Get(("h_t1out_term2_"+name_s+"_5").c_str());
       TH1F *h_nPatterns_am=(TH1F*)am->Get(("h_nPatterns_"+name_s).c_str());
       
-      makeCanvas(h_nPatterns_am, name_s+"_nPatterns", "# Patterns", "", kRed);
+      makeCanvas(h_nPatterns_am, percentile, name_s+"_nPatterns", "# Patterns", "", kRed);
       
       double am_t1out_total=h_t1out_am->GetSumOfWeights();
       double am_t1out_term1_layer_0=h_t1out_term1_am_0->GetSumOfWeights()/am_t1out_total;
@@ -362,7 +355,7 @@ void DisplayTiming(std::string title)
       double am_t1out_term2_layer_4=h_t1out_term2_am_4->GetSumOfWeights()/am_t1out_total;
       double am_t1out_term2_layer_5=h_t1out_term2_am_5->GetSumOfWeights()/am_t1out_total;
       int rebin=0;
-      TCanvas *c_t1out_am=makeCanvasForStack(h_t1out_am, name_s+"_t1out", "AssociativeMemory", rebin, "ns");
+      TCanvas *c_t1out_am=makeCanvasForStack(h_t1out_am, percentile, name_s+"_t1out", "AssociativeMemory", rebin, "ns");
       h_t1out_term1_am_0->Rebin(rebin);
       h_t1out_term1_am_1->Rebin(rebin);
       h_t1out_term1_am_2->Rebin(rebin);
@@ -419,7 +412,7 @@ void DisplayTiming(std::string title)
       leg->Draw("same");
       c_t1out_am->SaveAs(("c_"+name_s+"_t1out.png").c_str());
       
-      makeCanvas(h_t2out_am, name_s+"_t2out", "AssociativeMemory", "ns");
+      makeCanvas(h_t2out_am, percentile, name_s+"_t2out", "AssociativeMemory", "ns");
     
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -459,8 +452,7 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("AssociativeMemory", kCyan, h_t1out_am, h_t2out_am);
-      blockDiagram_0p999.addComponent("AssociativeMemory", kCyan, h_t1out_am, h_t2out_am);
+      blockDiagram.addComponent("AssociativeMemory", kCyan, h_t1out_am, h_t2out_am);
     }
     
     if (component_s.find("HitBuffer")!=std::string::npos)
@@ -478,8 +470,8 @@ void DisplayTiming(std::string title)
       TH1F *h_t2out_hb=(TH1F*)hb->Get(("h_t2out_"+name_s).c_str());
       TH1F *h_nOutwords_hb=(TH1F*)hb->Get(("h_nOutwords_"+name_s).c_str());
       
-      makeCanvas(h_nOutwords_hb, name_s+"_nOutwords", "# Outwords", "", kRed);
-      makeCanvas(h_t1out_hb, h_t2out_hb, name_s, "HitBuffer", "ns");
+      makeCanvas(h_nOutwords_hb, percentile, name_s+"_nOutwords", "# Outwords", "", kRed);
+      makeCanvas(h_t1out_hb, h_t2out_hb, percentile, name_s, "HitBuffer", "ns");
       
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -495,8 +487,7 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("HitBuffer", kRed, h_t1out_hb, h_t2out_hb);
-      blockDiagram_0p999.addComponent("HitBuffer", kRed, h_t1out_hb, h_t2out_hb);
+      blockDiagram.addComponent("HitBuffer", kRed, h_t1out_hb, h_t2out_hb);
     }
     
     if (component_s.find("CombinationBuilder")!=std::string::npos)
@@ -513,8 +504,8 @@ void DisplayTiming(std::string title)
       TH1F *h_t2out_cb=(TH1F*)cb->Get(("h_t2out_"+name_s).c_str());
       TH1F *h_nCombinations_=(TH1F*)cb->Get(("h_nCombinations_"+name_s).c_str());
       
-      makeCanvas(h_nCombinations_, name_s+"_nCombinations", "# Combinations", "", kRed);
-      makeCanvas(h_t1out_cb, h_t2out_cb, name_s, "CombinationBuilder", "ns");
+      makeCanvas(h_nCombinations_, percentile, name_s+"_nCombinations", "# Combinations", "", kRed);
+      makeCanvas(h_t1out_cb, h_t2out_cb, percentile, name_s, "CombinationBuilder", "ns");
       
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -529,8 +520,7 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("CombinationBuilder", kOrange, h_t1out_cb, h_t2out_cb);
-      blockDiagram_0p999.addComponent("CombinationBuilder", kOrange, h_t1out_cb, h_t2out_cb);
+      blockDiagram.addComponent("CombinationBuilder", kOrange, h_t1out_cb, h_t2out_cb);
     }
     
     if (component_s.find("TrackFitter")!=std::string::npos)
@@ -547,8 +537,8 @@ void DisplayTiming(std::string title)
       TH1F *h_t2out_tf=(TH1F*)tf->Get(("h_t2out_"+name_s).c_str());
       TH1F *h_nTracks_=(TH1F*)tf->Get(("h_nTracks_"+name_s).c_str());
       
-      makeCanvas(h_nTracks_, name_s+"_nTracks", "# Tracks", "", kRed);
-      makeCanvas(h_t1out_tf, h_t2out_tf, name_s, "TrackFitter", "ns");
+      makeCanvas(h_nTracks_, percentile, name_s+"_nTracks", "# Tracks", "", kRed);
+      makeCanvas(h_t1out_tf, h_t2out_tf, percentile, name_s, "TrackFitter", "ns");
       
       outfile<<"  <tr>"<<std::endl;
       outfile<<"    <td align='center'>"<<std::endl;
@@ -563,22 +553,19 @@ void DisplayTiming(std::string title)
       outfile<<"    </td>"<<std::endl;
       outfile<<"  </tr>"<<std::endl;
       
-      blockDiagram_0p50.addComponent("TrackFitter", kViolet, h_t1out_tf, h_t2out_tf);
-      blockDiagram_0p999.addComponent("TrackFitter", kViolet, h_t1out_tf, h_t2out_tf);
+      blockDiagram.addComponent("TrackFitter", kViolet, h_t1out_tf, h_t2out_tf);
     }
   }
   
   outfile<<"</table>"<<std::endl;
   
-  blockDiagram_0p50.drawCanvas();
-  blockDiagram_0p999.drawCanvas();
+  blockDiagram.drawCanvas();
   
   outfile<<" <hr/> "<<std::endl;
   outfile<<" <h1 align='center'> Summary Block Diagram </h1>"<<std::endl;
-  // outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.500.png'/>"<<std::endl;
-  outfile<<"  <img style='width:80\%' src='c_BlockDiagram_0.999.png'/>"<<std::endl;
+  outfile<<"  <img style='width:80\%' src='"<<("c_BlockDiagram_"+ftoa3(percentile)+".png").c_str()<<"'/>"<<std::endl;
   outfile<<" <hr/> "<<std::endl;
-  
+  /*
   TFile *f_fifo=new TFile("fifos.root");
   TH1F *h_AM_FIFO_0=(TH1F*)f_fifo->Get("h_AM_FIFO_0");
   TH1F *h_AM_FIFO_1=(TH1F*)f_fifo->Get("h_AM_FIFO_1");
@@ -600,7 +587,7 @@ void DisplayTiming(std::string title)
   outfile<<"  <img style='width:80\%' src='c_fifo1_4.png'/>"<<std::endl;
   outfile<<"  <img style='width:80\%' src='c_fifo1_5.png'/>"<<std::endl;
   outfile<<" <hr/> "<<std::endl;
-  
+  */
   outfile<<"</body>"<<std::endl;
   outfile<<"</html>"<<std::endl;
 }

@@ -23,6 +23,13 @@ void removeSpaces(std::string &input)
   input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
 }
 
+bool findClass(Component *component, std::string name)
+{
+  std::string classname=std::string(typeid(*component).name());
+  if (classname.find(name)!=std::string::npos) return true;
+  else return false;
+} 
+
 int main(int argc, char *argv[])
 {
   std::string schematicFilename="Schematic.txt";
@@ -167,12 +174,12 @@ int main(int argc, char *argv[])
   std::vector<float> *stubs_modId=0;
   std::vector<float> *stubs_r=0;
   std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs=0;
-  std::vector<float> *tracks_eta=0;
+  std::vector<unsigned int> *tracks_roadRef=0;
   
   tree->SetBranchAddress("TTStubs_modId", &(stubs_modId));
   tree->SetBranchAddress("TTStubs_r", &(stubs_r));
   tree->SetBranchAddress("AMTTRoads_stubRefs", &(roads_stubRefs));
-  tree->SetBranchAddress("AMTTTracks_eta", &(tracks_eta));
+  tree->SetBranchAddress("AMTTTracks_roadRef", &(tracks_roadRef));
   
   // Book histograms for the FIFO depth
   TH1F *h_AM_FIFO_0=new TH1F("h_AM_FIFO_0", "Depth of AM FIFO 0", 500, 0, 300);
@@ -201,37 +208,13 @@ int main(int argc, char *argv[])
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     tree->GetEntry(i_event);
-    EventCharacteristics event(stubs_modId, stubs_r, roads_stubRefs, tracks_eta);
-    
-    /*
-    EventCharacteristics event;
-    for (unsigned int i=0; i<6; ++i)
-    {
-      event.nStubs_layer.at(i)=0;
-    }
-    event.nPatterns=0;
-    event.nOutwords=0;
-    event.nCombinations=0;
-    event.nTracks=0;
-    
-    std::cout<<"=== Event === "<<std::endl;
-    for (unsigned int i=0; i<6; ++i)
-    {
-      std::cout<<"event.nStubs_layer.at("<<i<<") = "<<event.nStubs_layer.at(i)<<std::endl;
-    }
-    std::cout<<"event.nPatterns = "<<event.nPatterns<<std::endl;
-    std::cout<<"event.nOutwords = "<<event.nOutwords<<std::endl;
-    std::cout<<"event.nCombinations = "<<event.nCombinations<<std::endl;
-    std::cout<<"event.nTracks = "<<event.nTracks<<std::endl;
-    std::cout<<"=== ==="<<std::endl;
-    */
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
     {
       ComponentRelation *componentRelation=componentRelations.at(i_comp);
       Component *component=componentRelation->comp_;
-      component->setEventCharacteristics(&event);
+      if (component->get_type()=="DataSource") component->setEventCharacteristics(EventCharacteristics(stubs_modId, stubs_r, roads_stubRefs, tracks_roadRef));
       component->computeOutputTimes();
       
       // Printout outputs of this component
@@ -239,6 +222,17 @@ int main(int argc, char *argv[])
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp
+      // Also count number of connected components for eventCharacteristics splitting
+      std::vector<StubMapper*> stubMappers;
+      std::vector<AssociativeMemory*> associativeMemories;
+      std::vector<HitBuffer*> hitBuffers;
+      std::vector<CombinationBuilder*> combinationBuilders;
+      std::vector<TrackFitter*> trackFitters;
+      std::string targetSMName="";
+      std::string targetAMName="";
+      std::string targetHBName="";
+      std::string targetCBName="";
+      std::string targetTFName="";
       for (unsigned int i_pin=0; i_pin<componentRelation->i_comp_.size(); ++i_pin)
       {
         if (componentRelation->i_comp_.at(i_pin)<componentRelations.size())
@@ -246,23 +240,88 @@ int main(int argc, char *argv[])
           Component *targetComponent=componentRelations.at(componentRelation->i_comp_.at(i_pin))->comp_;
           targetComponent->set_t1in(componentRelation->i_input_.at(i_pin), component->get_t1out(componentRelation->i_output_.at(i_pin)));
           targetComponent->set_t2in(componentRelation->i_input_.at(i_pin), component->get_t2out(componentRelation->i_output_.at(i_pin)));
+          
+          if (targetComponent->get_type()=="StubMapper" && targetComponent->get_name()!=targetSMName)
+          {
+            stubMappers.push_back((StubMapper*)targetComponent);
+            targetSMName=targetComponent->get_name();
+          }
+          else if (targetComponent->get_type()=="AssociativeMemory" && targetComponent->get_name()!=targetAMName) 
+          {
+            associativeMemories.push_back((AssociativeMemory*)targetComponent);
+            targetAMName=targetComponent->get_name();
+          }
+          else if (targetComponent->get_type()=="HitBuffer" && targetComponent->get_name()!=targetHBName)
+          {
+            hitBuffers.push_back((HitBuffer*)targetComponent);
+            targetHBName=targetComponent->get_name();
+          }
+          else if (targetComponent->get_type()=="CombinationBuilder" && targetComponent->get_name()!=targetCBName)
+          {
+            combinationBuilders.push_back((CombinationBuilder*)targetComponent);
+            targetCBName=targetComponent->get_name();
+          }
+          else if (targetComponent->get_type()=="TrackFitter" && targetComponent->get_name()!=targetTFName)
+          {
+            trackFitters.push_back((TrackFitter*)targetComponent);
+            targetTFName=targetComponent->get_name();
+          } 
         }
         else
         {
           std::cout<<"ERROR: Schematic file. Output pins of component "<<component->get_name()<<" refer to non-existent indices in schematic."<<std::endl;
         }
       }
+      
+      if (component->get_type()=="DataSource")
+      {
+        if (stubMappers.size()==0) std::cout<<"ERROR: DataSource "<<component->get_name()<<" is not connected to a StubMapper."<<std::endl;
+        for (unsigned int i_sm=0; i_sm<stubMappers.size(); ++i_sm)
+        {
+          stubMappers.at(i_sm)->setEventCharacteristics(*(component->getEventCharacteristics()));
+        }
+      }
+      else if (component->get_type()=="StubMapper")
+      {
+        if (associativeMemories.size()==0) std::cout<<"ERROR: StubMapper "<<component->get_name()<<" is not connected to an AssociativeMemory."<<std::endl;
+        if (hitBuffers.size()!=associativeMemories.size()) std::cout<<"ERROR: Number of HitBuffers connected to StubMapper "<<component->get_name()<<" is not equal to the number of AssociativeMemories."<<std::endl;
+        std::vector<EventCharacteristics> events;
+        component->getEventCharacteristics()->splitEventAtAM(associativeMemories.size(), &events);
+        for (unsigned int i_am=0; i_am<associativeMemories.size(); ++i_am)
+        {
+          associativeMemories.at(i_am)->setEventCharacteristics(events.at(i_am));
+          hitBuffers.at(i_am)->setEventCharacteristics(events.at(i_am));
+        }
+      }
+      else if (component->get_type()=="HitBuffer")
+      {
+        if (combinationBuilders.size()==0) std::cout<<"ERROR: HitBuffer "<<component->get_name()<<" is not connected to a CombinationBuilder."<<std::endl;
+        for (unsigned int i_cb=0; i_cb<combinationBuilders.size(); ++i_cb)
+        {
+          combinationBuilders.at(i_cb)->setEventCharacteristics(*(component->getEventCharacteristics()));
+        }
+      }
+      else if (component->get_type()=="CombinationBuilder")
+      {
+        if (trackFitters.size()==0) std::cout<<"ERROR: CombinationBuilder "<<component->get_name()<<" is connected to a TrackFitter."<<std::endl;
+        for (unsigned int i_tf=0; i_tf<trackFitters.size(); ++i_tf)
+        {
+          trackFitters.at(i_tf)->setEventCharacteristics(*(component->getEventCharacteristics()));
+        }
+      } 
+      
     }
     
     // Calculate length of FIFOs
-    h_AM_FIFO_0->Fill(amRatio*double(event.nStubs_layer.at(0)));
-    h_AM_FIFO_1->Fill(amRatio*double(event.nStubs_layer.at(1)));
-    h_AM_FIFO_2->Fill(amRatio*double(event.nStubs_layer.at(2)));
+    /*h_AM_FIFO_0->Fill(amRatio*double(event->nStubs_layer.at(0)));
+    h_AM_FIFO_1->Fill(amRatio*double(event->nStubs_layer.at(1)));
+    h_AM_FIFO_2->Fill(amRatio*double(event->nStubs_layer.at(2)));
     h_AM_FIFO_3->Fill(amRatio*double(event.nStubs_layer.at(3)));
     h_AM_FIFO_4->Fill(amRatio*double(event.nStubs_layer.at(4)));
     h_AM_FIFO_5->Fill(amRatio*double(event.nStubs_layer.at(5)));
     h_CB_FIFO->Fill(cbRatio*double(event.nOutwords));
     h_TF_FIFO->Fill(tfRatio*double(event.nCombinations));
+    */
     
     if (i_event%1000==0) std::cout<<"Events "<<i_event<<" out of "<<nEvents<<" have been processed."<<std::endl;
   }

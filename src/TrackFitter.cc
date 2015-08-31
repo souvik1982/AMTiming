@@ -4,6 +4,7 @@
 
 TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double delay)
 {
+  type_="TrackFitter";
   name_=name;
   inTime_=inTime;
   outTime_=outTime;
@@ -21,25 +22,16 @@ TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double
   h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 1000, 0, 1000);
 }
 
-bool TrackFitter::setEventCharacteristics(EventCharacteristics *event)
-{
-  nCombinations_=event->nCombinations;
-  nTracks_=event->nTracks;
-  h_nCombinations_->Fill(nCombinations_);
-  h_nTracks_->Fill(nTracks_);
-  return true;
-}
-
 bool TrackFitter::computeOutputTimes()
 {
   if (delay_>0 && inTime_>0 && outTime_>0)
   {
-    if (nCombinations_!=-999 && nTracks_!=-999)
+    if (event_.nCombinations!=-999 && event_.nTracks!=-999)
     {
       if (t1in_.at(0)!=-999 && t2in_.at(0)!=-999)
       {
         t1out_.at(0)=t1in_.at(0)+delay_;
-        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+nCombinations_*inTime_, t1out_.at(0)+(nTracks_+1)*outTime_));
+        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+(event_.nCombinations+1)*inTime_, t1out_.at(0)+(event_.nTracks+1)*outTime_));
         
         v_h_t1out_.at(0)->Fill(t1out_.at(0));
         v_h_t2out_.at(0)->Fill(t2out_.at(0));
@@ -52,7 +44,7 @@ bool TrackFitter::computeOutputTimes()
     }
     else
     {
-      std::cout<<"ERROR: TrackFitter "<<name_<<" has Event Characteristic nCombinations = "<<nCombinations_<<", and nTracks = "<<nTracks_<<std::endl;
+      std::cout<<"ERROR: TrackFitter "<<name_<<" has Event Characteristic nCombinations = "<<event_.nCombinations<<", and nTracks = "<<event_.nTracks<<std::endl;
       return false;
     }
   }
@@ -65,6 +57,11 @@ bool TrackFitter::computeOutputTimes()
     std::cout<<"====="<<std::endl;
     return false;
   }
+  
+  // Fill histograms
+  h_nCombinations_->Fill(event_.nCombinations);
+  h_nTracks_->Fill(event_.nTracks);
+  
   return true;
 }
 

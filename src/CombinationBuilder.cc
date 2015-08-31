@@ -4,6 +4,7 @@
 
 CombinationBuilder::CombinationBuilder(std::string name, double inTime, double outTime, double delay)
 {
+  type_="CombinationBuilder";
   name_=name;
   inTime_=inTime;
   outTime_=outTime;
@@ -21,25 +22,16 @@ CombinationBuilder::CombinationBuilder(std::string name, double inTime, double o
   h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10000, 0, 10000);
 }
 
-bool CombinationBuilder::setEventCharacteristics(EventCharacteristics *event)
-{
-  nOutwords_=event->nOutwords;
-  nCombinations_=event->nCombinations;
-  h_nOutwords_->Fill(nOutwords_);
-  h_nCombinations_->Fill(nCombinations_);
-  return true;
-}
-
 bool CombinationBuilder::computeOutputTimes()
 {
   if (delay_>0 && inTime_>0 && outTime_>0)
   {
-    if (nOutwords_!=-999 && nCombinations_!=-999)
+    if (event_.nOutwords!=-999 && event_.nCombinations!=-999)
     {
       if (t1in_.at(0)!=-999 && t2in_.at(0)!=-999)
       {
         t1out_.at(0)=t1in_.at(0)+delay_;
-        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+nOutwords_*inTime_, t1out_.at(0)+(nCombinations_+1)*outTime_));
+        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+(event_.nOutwords+1)*inTime_, t1out_.at(0)+(event_.nCombinations+1)*outTime_));
         
         v_h_t1out_.at(0)->Fill(t1out_.at(0));
         v_h_t2out_.at(0)->Fill(t2out_.at(0));
@@ -52,7 +44,7 @@ bool CombinationBuilder::computeOutputTimes()
     }
     else
     {
-      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nOutwords = "<<nOutwords_<<", and nCombinations = "<<nCombinations_<<std::endl;
+      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nOutwords = "<<event_.nOutwords<<", and nCombinations = "<<event_.nCombinations<<std::endl;
       return false;
     }
   }
@@ -65,6 +57,11 @@ bool CombinationBuilder::computeOutputTimes()
     std::cout<<"====="<<std::endl;
     return false;
   }
+  
+  // Fill histograms
+  h_nOutwords_->Fill(event_.nOutwords);
+  h_nCombinations_->Fill(event_.nCombinations);
+  
   return true;
 }
 

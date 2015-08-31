@@ -4,6 +4,7 @@
 
 DataSource::DataSource(std::string name, double outTime)
 {
+  type_="DataSource";
   name_=name;
   outTime_=outTime;
   for (unsigned int i=0; i<6; ++i)
@@ -21,28 +22,18 @@ DataSource::DataSource(std::string name, double outTime)
   
 }
 
-bool DataSource::setEventCharacteristics(EventCharacteristics *event)
-{
-  nStubs_layer_=event->nStubs_layer;
-  for (unsigned int i=0; i<v_h_nStubs_.size(); ++i)
-  {
-    v_h_nStubs_.at(i)->Fill(nStubs_layer_.at(i));
-  }
-  return true;
-}
-
 bool DataSource::computeOutputTimes()
 {
   if (outTime_>0)
   {
     for (unsigned int i=0; i<6; ++i)
     {
-      if (nStubs_layer_.at(i)!=-999)
+      if (event_.nStubs_layer.at(i)!=-999)
       {
         if (t1in_.at(i)!=-999)                                                                       
         {                                                                                            
           t1out_.at(i)=t1in_.at(i);
-          t2out_.at(i)=t1in_.at(i)+(nStubs_layer_.at(i)+1)*outTime_;
+          t2out_.at(i)=t1in_.at(i)+(event_.nStubs_layer.at(i)+1)*outTime_;
           
           v_h_t2out_.at(i)->Fill(t2out_.at(i));
         }                                                                                            
@@ -54,7 +45,7 @@ bool DataSource::computeOutputTimes()
       }
       else
       {
-        std::cout<<"ERROR: DataSource "<<name_<<" has Event Characteristic nStubs_layer["<<i<<"] = "<<nStubs_layer_.at(i)<<std::endl;
+        std::cout<<"ERROR: DataSource "<<name_<<" has Event Characteristic nStubs_layer["<<i<<"] = "<<event_.nStubs_layer.at(i)<<std::endl;
         return false;
       }                                                                                     
     }
@@ -64,6 +55,13 @@ bool DataSource::computeOutputTimes()
     std::cout<<"ERROR: DataSource "<<name_<<" has Component Characteristic outTime = "<<outTime_<<std::endl;
     return false;
   }
+  
+  // Fill histograms
+  for (unsigned int i=0; i<v_h_nStubs_.size(); ++i)
+  {
+    v_h_nStubs_.at(i)->Fill(event_.nStubs_layer.at(i));
+  }
+  
   return true;
 } 
 

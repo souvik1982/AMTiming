@@ -4,6 +4,7 @@
 
 HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double outTime, double delay)
 {
+  type_="HitBuffer";
   name_=name;
   inTime_=inTime;
   procTime_=procTime;
@@ -28,20 +29,6 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
   h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nWords", 1000, 0, 1000);
 }
 
-bool HitBuffer::setEventCharacteristics(EventCharacteristics *event)
-{
-  nStubs_layer_=event->nStubs_layer;
-  nPatterns_=event->nPatterns;
-  nOutwords_=event->nOutwords;
-  for (unsigned int i=0; i<v_h_nStubs_.size(); ++i)
-  {
-    v_h_nStubs_.at(i)->Fill(nStubs_layer_.at(i));
-  }
-  h_nPatterns_->Fill(nPatterns_);
-  h_nOutwords_->Fill(nOutwords_);
-  return true;
-}
-
 bool HitBuffer::computeOutputTimes()
 {
   if (delay_>0 && inTime_>0 && procTime_>0 && outTime_>0)
@@ -51,19 +38,19 @@ bool HitBuffer::computeOutputTimes()
       double maxTime=-999;
       for (unsigned int i=0; i<6; ++i)
       {
-        if (nStubs_layer_.at(i)!=-999)
+        if (event_.nStubs_layer.at(i)!=-999)
         {
-          double maxTime_layer=std::max(t1in_.at(6), std::max(t1in_.at(i)+nStubs_layer_.at(i)*inTime_, t2in_.at(i)));
+          double maxTime_layer=std::max(t1in_.at(6), std::max(t1in_.at(i)+(event_.nStubs_layer.at(i)+1)*inTime_, t2in_.at(i)));
           if (maxTime_layer>maxTime) maxTime=maxTime_layer;
         }
         else
         {
-          std::cout<<"ERROR: HitBuffer "<<name_<<" has Event Characteristic nStubs_layer.at("<<i<<") = "<<nStubs_layer_.at(i)<<std::endl;
+          std::cout<<"ERROR: HitBuffer "<<name_<<" has Event Characteristic event_.nStubs_layer.at("<<i<<") = "<<event_.nStubs_layer.at(i)<<std::endl;
           return false;
         }
       }
       t1out_.at(0)=maxTime+delay_;
-      t2out_.at(0)=std::max(t2in_.at(6)+delay_, std::max(t1out_.at(0)+nPatterns_*procTime_, (nOutwords_+1)*outTime_));
+      t2out_.at(0)=std::max(t2in_.at(6)+delay_, std::max(t1out_.at(0)+(event_.nPatterns+1)*procTime_, (event_.nOutwords+1)*outTime_));
       
       v_h_t1out_.at(0)->Fill(t1out_.at(0));
       v_h_t2out_.at(0)->Fill(t2out_.at(0));
@@ -84,6 +71,15 @@ bool HitBuffer::computeOutputTimes()
     std::cout<<"====="<<std::endl;
     return false;
   }
+  
+  // Fill histograms
+  for (unsigned int i=0; i<v_h_nStubs_.size(); ++i)
+  {
+    v_h_nStubs_.at(i)->Fill(event_.nStubs_layer.at(i));
+  }
+  h_nPatterns_->Fill(event_.nPatterns);
+  h_nOutwords_->Fill(event_.nOutwords);
+  
   return true;
 }
 
