@@ -66,13 +66,15 @@ EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std:
       if (nStubs>0) nCombRoad*=double(nStubs);
     }
     nOutwords+=nMaxStubPerSuperstrip;
-    nCombinations+=nCombRoad;
+    // nCombinations+=nCombRoad;
     // For bypass
     // nOutwords+=1;
-    // nCombinations+=1;
+    nCombinations+=1;
   }
   
-  nTracks=tracks_roadRef_.size();
+  // nTracks=tracks_roadRef_.size();
+  // For bypass
+  nTracks=std::min(nCombinations, double(tracks_roadRef_.size()));
 }
 
 void EventCharacteristics::splitEventAtAM(unsigned int nAM, std::vector<EventCharacteristics> *events)
