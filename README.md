@@ -1,7 +1,7 @@
 # AMTiming
 
-<img width="50%" src="http://home.fnal.gov/~souvik/Work/AMTiming/plots_PARALLEL2AM_Neutrino_PU140_tt27_sf1_nz4_pt3_ml5_20150511/c_tf2.png"/>
-<img src="http://home.fnal.gov/~souvik/Work/AMTiming/plots_PARALLEL2AM_Neutrino_PU140_tt27_sf1_nz4_pt3_ml5_20150511/c_BlockDiagram_0.999.png"/>
+<img width="20%" src="http://home.fnal.gov/~souvik/Work/AMTiming/plots_PARALLEL2AM_Neutrino_PU140_tt27_sf1_nz4_pt3_ml5_20150511/c_tf2.png"/>
+<img width="20%" src="http://home.fnal.gov/~souvik/Work/AMTiming/plots_PARALLEL2AM_Neutrino_PU140_tt27_sf1_nz4_pt3_ml5_20150511/c_BlockDiagram_0.999.png"/>
 
 The aim of this project is to model the hardware of the Associative Memory L1 Track Trigger in sufficient detail to estimate the latency of the entire system when in operation during LHC Phase 2 at CMS. Central to the project is the development of a software package that models the hardware at the appropriate level of detail and is informed by algorithmic simulations of the AM pattern finding, track fitting and other components. The software package will also help us identify bottlenecks in latency caused by slow components or expected large fluxes of data, which can be solved by parallelization of these components.
 
