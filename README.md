@@ -13,10 +13,10 @@ The software tool has to be developed in conjunction with hardware of a Demonstr
 
 ## Questions to be answered with the package
 
-•	What is the latency for an empty event to transit the entire system?
-•	What is the latency for a minimum bias event with 140 PU? 
-•	What is the latency for a tttt+140 PU event?
-•	How does the latency depend on PU? Can we extrapolate to 200 PU?
-•	How many AMs are required to bring the latency of the PRM down to 4 μs?
-o	Do the HB, CB, TF also need to be parallelized? Or can we save hardware resources space by not parallelizing them?
-•	What are the aforementioned latencies of the system for de-scoped versions of the tracker?
+* What is the latency for an empty event to transit the entire system?
+* What is the latency for a minimum bias event with 140 PU? 
+* What is the latency for a tttt+140 PU event?
+* How does the latency depend on PU? Can we extrapolate to 200 PU?
+* How many AMs are required to bring the latency of the PRM down to 4 μs?
+* Do the HB, CB, TF also need to be parallelized? Or can we save hardware resources space by not parallelizing them?
+* What are the aforementioned latencies of the system for de-scoped versions of the tracker?
