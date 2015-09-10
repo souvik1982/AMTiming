@@ -6,10 +6,10 @@ The software tool has to be developed in conjunction with hardware of a Demonstr
 
 ## Building the software package
 
-•	A configuration file format has to be developed that can describe one Demonstrator chain, a single crate containing multiple PRMs, and the entire L1TT system, and yet me easily readable in all cases.
-•	The package should be able to handle parallelization of the AM, the Hit Buffer, the Combination Builder and the Track Fitter.
-•	The package should be able to point out which data streams create the most delays in each component.
-•	There has to be close coordination and involvement with the hardware developers of the StubMapper, the AM (VIPRAM00), the Hit Buffer, the Combination Builder and the Track Fitter to understand if the level of hardware characterization is sufficient.
+* A configuration file format has to be developed that can describe one Demonstrator chain, a single crate containing multiple PRMs, and the entire L1TT system, and yet me easily readable in all cases.
+* The package should be able to handle parallelization of the AM, the Hit Buffer, the Combination Builder and the Track Fitter.
+* The package should be able to point out which data streams create the most delays in each component.
+* There has to be close coordination and involvement with the hardware developers of the StubMapper, the AM (VIPRAM00), the Hit Buffer, the Combination Builder and the Track Fitter to understand if the level of hardware characterization is sufficient.
 
 ## Questions to be answered with the package
 
