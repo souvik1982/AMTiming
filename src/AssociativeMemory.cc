@@ -26,6 +26,8 @@ AssociativeMemory::AssociativeMemory(std::string name, double delay, double inTi
   v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";AssociativeMemory "+name_+" t2out").c_str(), 10000, 0, 10000));
    
   h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 1000, 0, 1000);
+  
+  std::cout<<"LOG: Initialized AssociativeMemory "<<name_<<" with delay = "<<delay_<<" ns, inTime = "<<inTime_<<" ns, outTime = "<<outTime_<<" ns"<<std::endl;
 }
 
 bool AssociativeMemory::computeOutputTimes()

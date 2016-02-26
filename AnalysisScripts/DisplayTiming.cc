@@ -134,7 +134,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
   BlockDiagram blockDiagram(percentile, title);
   
   ofstream outfile;
-  outfile.open("AMTimingAnalysis.html");
+  outfile.open("index.html");
   outfile<<"<html>"<<std::endl;
   outfile<<"<head>"<<std::endl;
   outfile<<"</head>"<<std::endl;

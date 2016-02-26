@@ -27,6 +27,8 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
   
   h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 1000, 0, 1000);
   h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nWords", 1000, 0, 1000);
+  
+  std::cout<<"LOG: Initialized HitBuffer "<<name_<<" with inTime = "<<inTime_<<" ns, procTime = "<<procTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
 }
 
 bool HitBuffer::computeOutputTimes()

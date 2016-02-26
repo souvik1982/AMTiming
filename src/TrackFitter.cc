@@ -20,6 +20,8 @@ TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double
   
   h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10000, 0, 10000);
   h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 1000, 0, 1000);
+
+  std::cout<<"LOG: Initialized TrackFitter "<<name_<<" with inTime = "<<inTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
 }
 
 bool TrackFitter::computeOutputTimes()

@@ -8,8 +8,6 @@ void ComponentRelation::extractComponentRelation(std::string s)
 {
   std::stringstream ss(s);
   std::string buf;
-  getline(ss, buf, '|');
-  getline(ss, buf, '|');
   
   int status=0;
   unsigned int i_comp, i_output, i_input;

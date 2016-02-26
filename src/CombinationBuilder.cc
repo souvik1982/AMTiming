@@ -20,6 +20,8 @@ CombinationBuilder::CombinationBuilder(std::string name, double inTime, double o
   
   h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nOutwords", 10000, 0, 10000);
   h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10000, 0, 10000);
+  
+  std::cout<<"LOG: Initialized CombinationBuilder "<<name_<<" with inTime = "<<inTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
 }
 
 bool CombinationBuilder::computeOutputTimes()

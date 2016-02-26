@@ -19,7 +19,7 @@ DataSource::DataSource(std::string name, double outTime)
   
     v_h_nStubs_.push_back(new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
   }
-  
+  std::cout<<"LOG: Initialized DataSource "<<name_<<" with outTime = "<<outTime_<<" ns"<<std::endl;
 }
 
 bool DataSource::computeOutputTimes()

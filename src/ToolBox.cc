@@ -21,4 +21,9 @@ inline std::string ftoa(double i)
 
 static TRandom3 *r3=new TRandom3();
 
+inline void removeSpaces(std::string &input)
+{
+  input.erase(std::remove(input.begin(), input.end(), ' '), input.end());
+}
+
 #endif

@@ -7,7 +7,7 @@
 #include "TFile.h"
 
 #include "EventCharacteristics.h"
-#include "ToolBox.h"
+#include "../src/ToolBox.cc"
 
 class Component
 {
