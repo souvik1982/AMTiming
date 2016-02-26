@@ -213,8 +213,8 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> DataSource "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
-          outfile<<"      OutClock = "<<outClock_s<<"br/>"<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<"<br/> "<<std::endl;
+          outfile<<"      OutClock = "<<outClock_s<<"<br/>"<<std::endl;
           outfile<<"    </td>"<<std::endl;
           outfile<<"    <td>"<<std::endl;
           outfile<<"      <table border='1'>"<<std::endl;
@@ -301,7 +301,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> StubMapper "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<"<br/> "<<std::endl;
           outfile<<"      DelayClock = "<<delayClock_s<<"<br/> "<<std::endl;
           outfile<<"    </td>"<<std::endl;
           outfile<<"    <td>"<<std::endl;
@@ -442,7 +442,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> AssociativeMemory "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<" <br/> "<<std::endl;
           outfile<<"      InClock = "<<inClock_s<<"<br/> "<<std::endl;
           outfile<<"      DelayClock = "<<delayClock_s<<"<br/> "<<std::endl;
           outfile<<"      OutClock = "<<outClock_s<<"<br/> "<<std::endl;
@@ -502,7 +502,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> HitBuffer "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<"<br/> "<<std::endl;
           outfile<<"      InClock = "<<inClock_s<<"<br/> "<<std::endl;
           outfile<<"      ProcClock = "<<procClock_s<<"<br/> "<<std::endl;
           outfile<<"      DelayClock = "<<delayClock_s<<"<br/> "<<std::endl;
@@ -537,7 +537,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> CombinationBuilder "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<"<br/> "<<std::endl;
           outfile<<"      InClock = "<<inClock_s<<"<br/> "<<std::endl;
           outfile<<"      DelayClock = "<<delayClock_s<<"<br/> "<<std::endl;
           outfile<<"      OutClock = "<<outClock_s<<"<br/> "<<std::endl;
@@ -571,7 +571,7 @@ void DisplayTiming(std::string title, std::string schematicFileName, double perc
           outfile<<"  <tr>"<<std::endl;
           outfile<<"    <td align='center'>"<<std::endl;
           outfile<<"      <h2> TrackFitter "<<name_s<<"</h2> "<<std::endl;
-          outfile<<"      Frequency = "<<frequency_s<<" MHz <br/> "<<std::endl;
+          outfile<<"      Frequency = "<<frequency_s<<"<br/> "<<std::endl;
           outfile<<"      InClock = "<<inClock_s<<"<br/> "<<std::endl;
           outfile<<"      DelayClock = "<<delayClock_s<<"<br/> "<<std::endl;
           outfile<<"      OutClock = "<<outClock_s<<"<br/> "<<std::endl;
