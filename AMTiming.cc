@@ -264,12 +264,12 @@ int main(int argc, char *argv[])
     
     // Quick test to only check single muon events with 6 stubs
     // to establish contact with hardware testing
-    if (!(eventCharacteristics.nStubs_layer.at(0)==1 &&
+    /*if (!(eventCharacteristics.nStubs_layer.at(0)==1 &&
           eventCharacteristics.nStubs_layer.at(1)==1 &&
           eventCharacteristics.nStubs_layer.at(2)==1 &&
           eventCharacteristics.nStubs_layer.at(3)==1 &&
           eventCharacteristics.nStubs_layer.at(4)==1 &&
-          eventCharacteristics.nStubs_layer.at(5)==1)) continue;
+          eventCharacteristics.nStubs_layer.at(5)==1)) continue;*/
     
     // iterate over componentRelations
     for (unsigned int i_comp=0; i_comp<componentRelations.size(); ++i_comp)
