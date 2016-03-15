@@ -42,7 +42,7 @@ bool HitBuffer::computeOutputTimes()
       {
         if (event_.nStubs_layer.at(i)!=-999)
         {
-          double maxTime_layer=std::max(t1in_.at(6), std::max(t1in_.at(i)+(event_.nStubs_layer.at(i)+1)*inTime_, t2in_.at(i)));
+          double maxTime_layer=std::max(t1in_.at(6), std::max(t1in_.at(i)+event_.nStubs_layer.at(i)*inTime_, t2in_.at(i)));
           if (maxTime_layer>maxTime) maxTime=maxTime_layer;
         }
         else
@@ -52,7 +52,7 @@ bool HitBuffer::computeOutputTimes()
         }
       }
       t1out_.at(0)=maxTime+delay_;
-      t2out_.at(0)=std::max(t2in_.at(6)+delay_, std::max(t1out_.at(0)+(event_.nPatterns+1)*procTime_, (event_.nOutwords+1)*outTime_));
+      t2out_.at(0)=std::max(t2in_.at(6)+delay_, t1out_.at(0)+std::max(0., event_.nPatterns-1)*outTime_);
       
       v_h_t1out_.at(0)->Fill(t1out_.at(0));
       v_h_t2out_.at(0)->Fill(t2out_.at(0));

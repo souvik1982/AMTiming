@@ -32,8 +32,8 @@ bool DataSource::computeOutputTimes()
       {
         if (t1in_.at(i)!=-999)                                                                       
         {                                                                                            
-          t1out_.at(i)=t1in_.at(i);
-          t2out_.at(i)=t1in_.at(i)+(event_.nStubs_layer.at(i)+1)*outTime_;
+          t1out_.at(i)=t1in_.at(i)+outTime_;
+          t2out_.at(i)=t1in_.at(i)+event_.nStubs_layer.at(i)*outTime_;
           
           v_h_t2out_.at(i)->Fill(t2out_.at(i));
         }                                                                                            

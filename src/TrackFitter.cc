@@ -33,7 +33,7 @@ bool TrackFitter::computeOutputTimes()
       if (t1in_.at(0)!=-999 && t2in_.at(0)!=-999)
       {
         t1out_.at(0)=t1in_.at(0)+delay_;
-        t2out_.at(0)=std::max(t2in_.at(0)+delay_, std::max(t1out_.at(0)+(event_.nCombinations+1)*inTime_, t1out_.at(0)+(event_.nTracks+1)*outTime_));
+        t2out_.at(0)=std::max(t2in_.at(0)+delay_, t1out_.at(0)+std::max(event_.nCombinations*inTime_, event_.nTracks*outTime_));
         
         v_h_t1out_.at(0)->Fill(t1out_.at(0));
         v_h_t2out_.at(0)->Fill(t2out_.at(0));

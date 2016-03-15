@@ -44,7 +44,7 @@ bool AssociativeMemory::computeOutputTimes()
         if (t1in_.at(i)!=-999 && t2in_.at(i)!=-999)
         {
           double term1=t2in_.at(i);
-          double term2=t1in_.at(i)+(event_.nStubs_layer.at(i)+1)*inTime_;
+          double term2=t1in_.at(i)+event_.nStubs_layer.at(i)*inTime_;
           double maxTime_layer=std::max(term1, term2);
           if (maxTime_layer>maxTime) 
           {
@@ -83,7 +83,7 @@ bool AssociativeMemory::computeOutputTimes()
     } 
     if (event_.nPatterns!=-999)
     {
-      t2out_.at(0)=t1out_.at(0)+(event_.nPatterns+1)*outTime_;
+      t2out_.at(0)=t1out_.at(0)+std::max(0., event_.nPatterns-1)*outTime_;
       v_h_t2out_.at(0)->Fill(t2out_.at(0));
     }
     else
