@@ -80,7 +80,7 @@ bool HitBuffer::computeOutputTimes()
     v_h_nStubs_.at(i)->Fill(event_.nStubs_layer.at(i));
   }
   h_nPatterns_->Fill(event_.nPatterns);
-  h_nOutwords_->Fill(event_.nOutwords);
+  h_nOutwords_->Fill(event_.nSumMaxSS);
   
   return true;
 }

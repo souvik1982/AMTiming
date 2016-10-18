@@ -14,7 +14,7 @@ class EventCharacteristics
   public: 
     std::array<double, 6> nStubs_layer;
     double nPatterns;
-    double nOutwords;
+    double nSumMaxSS;
     double nCombinations;
     double nTracks;
     // std::vector<TH1F*> v_h_nStubs;

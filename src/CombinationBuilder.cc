@@ -28,7 +28,7 @@ bool CombinationBuilder::computeOutputTimes()
 {
   if (delay_>0 && inTime_>0 && outTime_>0)
   {
-    if (event_.nOutwords!=-999 && event_.nCombinations!=-999)
+    if (event_.nSumMaxSS!=-999 && event_.nCombinations!=-999)
     {
       if (t1in_.at(0)!=-999 && t2in_.at(0)!=-999)
       {
@@ -46,7 +46,7 @@ bool CombinationBuilder::computeOutputTimes()
     }
     else
     {
-      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nOutwords = "<<event_.nOutwords<<", and nCombinations = "<<event_.nCombinations<<std::endl;
+      std::cout<<"ERROR: CombinationBuilder "<<name_<<" has Event Characteristic nOutwords = "<<event_.nSumMaxSS<<", and nCombinations = "<<event_.nCombinations<<std::endl;
       return false;
     }
   }
@@ -61,7 +61,7 @@ bool CombinationBuilder::computeOutputTimes()
   }
   
   // Fill histograms
-  h_nOutwords_->Fill(event_.nOutwords);
+  h_nOutwords_->Fill(event_.nSumMaxSS);
   h_nCombinations_->Fill(event_.nCombinations);
   
   return true;

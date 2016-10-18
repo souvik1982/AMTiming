@@ -53,6 +53,10 @@ int main(int argc, char *argv[])
   if (cmdMap.find("-inputDir")!=cmdMap.end())  inputDir=cmdMap["-inputDir"];
   if (cmdMap.find("-inputFile")!=cmdMap.end()) inputFile=cmdMap["-inputFile"];
   
+  std::cout<<"Schematic filename = "<<schematicFilename<<std::endl;
+  std::cout<<"Input dir = "<<inputDir<<std::endl;
+  std::cout<<"Input file = "<<inputFile<<std::endl;
+  
   std::vector<ComponentRelation*> componentRelations;
   
   // Read the schematic file and store Component Characteristics
