@@ -2,14 +2,15 @@
 
 #include "../interface/HitBuffer.h"
 
-HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double outTime, double delay)
+HitBuffer::HitBuffer(std::string name, double frequency, double inCLK, double procCLK, double outCLK, double delayCLK)
 {
   type_="HitBuffer";
   name_=name;
-  inTime_=inTime;
-  procTime_=procTime;
-  outTime_=outTime;
-  delay_=delay;
+  frequency_=frequency;
+  inTime_=inCLK/frequency*1000.;
+  procTime_=procCLK/frequency*1000.;
+  outTime_=outCLK/frequency*1000.;
+  delay_=delayCLK/frequency*1000.;
   for (unsigned int i=0; i<6; ++i)
   {
     t1in_.push_back(-999);
@@ -39,7 +40,7 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
   h_nPatterns_->SetCanExtend(TH1::kAllAxes);
   h_nOutwords_->SetCanExtend(TH1::kAllAxes);
   
-  std::cout<<"LOG: Initialized HitBuffer "<<name_<<" with inTime = "<<inTime_<<" ns, procTime = "<<procTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
+  std::cout<<"LOG: Initialized HitBuffer "<<name_<<" with operating frequency = "<<frequency<<", inCLK = "<<inCLK<<", procCLK = "<<procCLK<<", outCLK = "<<outCLK<<", delayCLK = "<<delayCLK<<std::endl;
 }
 
 bool HitBuffer::computeOutputTimes()

@@ -4,7 +4,7 @@ class AssociativeMemory: public Component
 {
   public:
   
-    AssociativeMemory(std::string, double, double, double);
+    AssociativeMemory(std::string, double frequency, double delayCLK, double inCLK, double outCLK);
     bool computeOutputTimes();
     void writeHistograms();
     

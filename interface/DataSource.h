@@ -6,7 +6,7 @@ class DataSource: public Component
 {
   public:
     
-    DataSource(std::string name, double outTime);
+    DataSource(std::string name, double frequency, double outCLK);
     // bool setEventCharacteristics(EventCharacteristics*);
     bool computeOutputTimes();
     void writeHistograms();

@@ -21,6 +21,7 @@ class Component
     EventCharacteristics* getEventCharacteristics();
     std::string get_type();
     std::string get_name();
+    double get_frequency();
     void printOutputTimes();
     
     void clearValues();
@@ -38,6 +39,7 @@ class Component
     EventCharacteristics event_;
     std::string type_;
     std::string name_;
+    double frequency_;
     std::vector<TH1F*> v_h_t1out_;
     std::vector<TH1F*> v_h_t2out_;
 };

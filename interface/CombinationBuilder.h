@@ -4,7 +4,7 @@ class CombinationBuilder: public Component
 {
   public:
   
-    CombinationBuilder(std::string name, double inTime, double outTime, double delay);
+    CombinationBuilder(std::string name, double frequency, double inCLK, double outCLK, double delayCLK);
     bool computeOutputTimes();
     void writeHistograms();
     

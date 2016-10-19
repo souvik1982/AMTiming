@@ -2,13 +2,14 @@
 
 #include "../interface/TrackFitter.h"
 
-TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double delay)
+TrackFitter::TrackFitter(std::string name, double frequency, double inCLK, double outCLK, double delayCLK)
 {
   type_="TrackFitter";
   name_=name;
-  inTime_=inTime;
-  outTime_=outTime;
-  delay_=delay;
+  frequency_=frequency;
+  inTime_=inCLK/frequency*1000.;
+  outTime_=outCLK/frequency*1000.;
+  delay_=delayCLK/frequency*1000.;
   
   t1in_.push_back(-999);
   t2in_.push_back(-999);
@@ -30,7 +31,7 @@ TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double
   h_nCombinations_->SetCanExtend(TH1::kAllAxes);
   h_nTracks_->SetCanExtend(TH1::kAllAxes);
 
-  std::cout<<"LOG: Initialized TrackFitter "<<name_<<" with inTime = "<<inTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
+  std::cout<<"LOG: Initialized TrackFitter "<<name_<<" with operating frequency = "<<frequency<<", inCLK = "<<inCLK<<", outCLK = "<<outCLK<<", delayCLK = "<<delayCLK<<std::endl;
 }
 
 bool TrackFitter::computeOutputTimes()

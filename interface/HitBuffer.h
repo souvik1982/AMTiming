@@ -4,7 +4,7 @@ class HitBuffer: public Component
 {
   public:
   
-    HitBuffer(std::string name, double inTime, double procTime, double outTime, double delay);
+    HitBuffer(std::string name, double frequency, double inCLK, double procCLK, double outCLK, double delayCLK);
     bool computeOutputTimes();
     void writeHistograms();
     

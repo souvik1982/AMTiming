@@ -4,7 +4,7 @@ class TrackFitter: public Component
 {
   public:
   
-    TrackFitter(std::string name, double inTime, double outTime, double delay);
+    TrackFitter(std::string name, double frequency, double inCLK, double outCLK, double delayCLK);
     bool computeOutputTimes();
     void writeHistograms();
     

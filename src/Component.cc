@@ -74,6 +74,11 @@ std::string Component::get_name()
   return name_;
 }
 
+double Component::get_frequency()
+{
+  return frequency_;
+}
+
 void Component::printOutputTimes()
 {
   std::cout<<" === Component "<<name_<<" Timing "<<std::endl;

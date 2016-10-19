@@ -2,13 +2,14 @@
 
 #include "../interface/AssociativeMemory.h"
 
-AssociativeMemory::AssociativeMemory(std::string name, double delay, double inTime, double outTime)
+AssociativeMemory::AssociativeMemory(std::string name, double frequency, double delayCLK, double inCLK, double outCLK)
 {
   type_="AssociativeMemory";
   name_=name;
-  delay_=delay;
-  inTime_=inTime;
-  outTime_=outTime;
+  frequency_=frequency;
+  delay_=delayCLK/frequency*1000.;
+  inTime_=inCLK/frequency*1000.;
+  outTime_=outCLK/frequency*1000.;
   for (unsigned int i=0; i<6; ++i)
   {
     t1in_.push_back(-999);
@@ -41,7 +42,7 @@ AssociativeMemory::AssociativeMemory(std::string name, double delay, double inTi
    
   h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 1000, 0, 1000);
   
-  std::cout<<"LOG: Initialized AssociativeMemory "<<name_<<" with delay = "<<delay_<<" ns, inTime = "<<inTime_<<" ns, outTime = "<<outTime_<<" ns"<<std::endl;
+  std::cout<<"LOG: Initialized AssociativeMemory "<<name_<<" with operating frequency = "<<frequency<<", delayCLK = "<<delayCLK<<", inCLK = "<<inCLK<<", outCLK = "<<outCLK<<std::endl;
 }
 
 bool AssociativeMemory::computeOutputTimes()

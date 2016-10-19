@@ -87,9 +87,8 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_DataSource=readConfigurationLine(&file, s);
           std::string name_s; if (map_DataSource.find("ComponentName")!=map_DataSource.end()) name_s=map_DataSource["ComponentName"]; else std::cout<<"ERROR: DataSource ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_DataSource.find("Frequency")!=map_DataSource.end()) frequency=atof(map_DataSource["Frequency"].c_str()); else std::cout<<"ERROR: DataSource Frequency does not exist in configuration file"<<std::endl;
-          double outClock;    if (map_DataSource.find("OutClock")!=map_DataSource.end()) outClock=atof(map_DataSource["OutClock"].c_str()); else std::cout<<"ERROR: DataSource OutClock does not exist in configuration file"<<std::endl;
-          double outTime=outClock/frequency*1000.;
-          DataSource *ds=new DataSource(name_s, outTime);
+          double outCLK;      if (map_DataSource.find("OutCLK")!=map_DataSource.end()) outCLK=atof(map_DataSource["OutCLK"].c_str()); else std::cout<<"ERROR: DataSource OutCLK does not exist in configuration file"<<std::endl;
+          DataSource *ds=new DataSource(name_s, frequency, outCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -106,9 +105,8 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_StubMapper=readConfigurationLine(&file, s);
           std::string name_s; if (map_StubMapper.find("ComponentName")!=map_StubMapper.end()) name_s=map_StubMapper["ComponentName"]; else std::cout<<"ERROR: StubMapper ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_StubMapper.find("Frequency")!=map_StubMapper.end()) frequency=atof(map_StubMapper["Frequency"].c_str()); else std::cout<<"ERROR: StubMapper Frequency does not exist in configuration file"<<std::endl;
-          double delayClock;  if (map_StubMapper.find("DelayClock")!=map_StubMapper.end()) delayClock=atof(map_StubMapper["DelayClock"].c_str()); else std::cout<<"ERROR: DataSource DelayClock does not exist in configuration file"<<std::endl;
-          double delay=delayClock/frequency*1000.;
-          StubMapper *sm=new StubMapper(name_s, delay);
+          double delayCLK;    if (map_StubMapper.find("DelayCLK")!=map_StubMapper.end()) delayCLK=atof(map_StubMapper["DelayCLK"].c_str()); else std::cout<<"ERROR: DataSource DelayCLK does not exist in configuration file"<<std::endl;
+          StubMapper *sm=new StubMapper(name_s, frequency, delayCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -125,13 +123,10 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_AssociativeMemory=readConfigurationLine(&file, s);
           std::string name_s; if (map_AssociativeMemory.find("ComponentName")!=map_AssociativeMemory.end()) name_s=map_AssociativeMemory["ComponentName"]; else std::cout<<"ERROR: AssociateMemory ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_AssociativeMemory.find("Frequency")!=map_AssociativeMemory.end()) frequency=atof(map_AssociativeMemory["Frequency"].c_str()); else std::cout<<"ERROR: AssociativeMemory Frequency does not exist in configuration file"<<std::endl;
-          double inClock;     if (map_AssociativeMemory.find("InClock")!=map_AssociativeMemory.end()) inClock=atof(map_AssociativeMemory["InClock"].c_str()); else std::cout<<"ERROR: AssociativeMemory InClock does not exist in configuration file"<<std::endl;
-          double delayClock;  if (map_AssociativeMemory.find("DelayClock")!=map_AssociativeMemory.end()) delayClock=atof(map_AssociativeMemory["DelayClock"].c_str()); else std::cout<<"ERROR: AssociativeMemory DelayClock does not exist in configuration file"<<std::endl;
-          double outClock;    if (map_AssociativeMemory.find("OutClock")!=map_AssociativeMemory.end()) outClock=atof(map_AssociativeMemory["OutClock"].c_str()); else std::cout<<"ERROR: AssociativeMemory OutClock does not exist in configuration file"<<std::endl;
-          double inTime=inClock/frequency*1000.;
-          double delay=delayClock/frequency*1000.;
-          double outTime=outClock/frequency*1000.;
-          AssociativeMemory *am=new AssociativeMemory(name_s, delay, inTime, outTime);
+          double inCLK;       if (map_AssociativeMemory.find("InCLK")!=map_AssociativeMemory.end()) inCLK=atof(map_AssociativeMemory["InCLK"].c_str()); else std::cout<<"ERROR: AssociativeMemory InCLK does not exist in configuration file"<<std::endl;
+          double delayCLK;    if (map_AssociativeMemory.find("DelayCLK")!=map_AssociativeMemory.end()) delayCLK=atof(map_AssociativeMemory["DelayCLK"].c_str()); else std::cout<<"ERROR: AssociativeMemory DelayCLK does not exist in configuration file"<<std::endl;
+          double outCLK;      if (map_AssociativeMemory.find("OutCLK")!=map_AssociativeMemory.end()) outCLK=atof(map_AssociativeMemory["OutCLK"].c_str()); else std::cout<<"ERROR: AssociativeMemory OutCLK does not exist in configuration file"<<std::endl;
+          AssociativeMemory *am=new AssociativeMemory(name_s, frequency, delayCLK, inCLK, outCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -148,15 +143,11 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_HitBuffer=readConfigurationLine(&file, s);
           std::string name_s; if (map_HitBuffer.find("ComponentName")!=map_HitBuffer.end()) name_s=map_HitBuffer["ComponentName"]; else std::cout<<"ERROR: HitBuffer ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_HitBuffer.find("Frequency")!=map_HitBuffer.end()) frequency=atof(map_HitBuffer["Frequency"].c_str()); else std::cout<<"ERROR: HitBuffer Frequency does not exist in configuration file"<<std::endl;
-          double inClock;     if (map_HitBuffer.find("InClock")!=map_HitBuffer.end()) inClock=atof(map_HitBuffer["InClock"].c_str()); else std::cout<<"ERROR: HitBuffer InClock does not exist in configuration file"<<std::endl;
-          double procClock;   if (map_HitBuffer.find("ProcClock")!=map_HitBuffer.end()) procClock=atof(map_HitBuffer["ProcClock"].c_str()); else std::cout<<"ERROR: HitBuffer ProcClock does not exist in configuration file"<<std::endl;
-          double delayClock;  if (map_HitBuffer.find("DelayClock")!=map_HitBuffer.end()) delayClock=atof(map_HitBuffer["DelayClock"].c_str()); else std::cout<<"ERROR: HitBuffer DelayClock does not exist in configuration file"<<std::endl;
-          double outClock;    if (map_HitBuffer.find("OutClock")!=map_HitBuffer.end()) outClock=atof(map_HitBuffer["OutClock"].c_str()); else std::cout<<"ERROR: HitBuffer OutClock does not exist in configuration file"<<std::endl;
-          double inTime=inClock/frequency*1000.;
-          double procTime=procClock/frequency*1000.;
-          double delay=delayClock/frequency*1000.;
-          double outTime=outClock/frequency*1000.;
-          HitBuffer *hb=new HitBuffer(name_s, inTime, procTime, outTime, delay);
+          double inCLK;     if (map_HitBuffer.find("InCLK")!=map_HitBuffer.end()) inCLK=atof(map_HitBuffer["InCLK"].c_str()); else std::cout<<"ERROR: HitBuffer InCLK does not exist in configuration file"<<std::endl;
+          double procCLK;   if (map_HitBuffer.find("ProcCLK")!=map_HitBuffer.end()) procCLK=atof(map_HitBuffer["ProcCLK"].c_str()); else std::cout<<"ERROR: HitBuffer ProcCLK does not exist in configuration file"<<std::endl;
+          double delayCLK;  if (map_HitBuffer.find("DelayCLK")!=map_HitBuffer.end()) delayCLK=atof(map_HitBuffer["DelayCLK"].c_str()); else std::cout<<"ERROR: HitBuffer DelayCLK does not exist in configuration file"<<std::endl;
+          double outCLK;    if (map_HitBuffer.find("OutCLK")!=map_HitBuffer.end()) outCLK=atof(map_HitBuffer["OutCLK"].c_str()); else std::cout<<"ERROR: HitBuffer OutCLK does not exist in configuration file"<<std::endl;
+          HitBuffer *hb=new HitBuffer(name_s, frequency, inCLK, procCLK, outCLK, delayCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -173,13 +164,10 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_CombinationBuilder=readConfigurationLine(&file, s);
           std::string name_s; if (map_CombinationBuilder.find("ComponentName")!=map_CombinationBuilder.end()) name_s=map_CombinationBuilder["ComponentName"]; else std::cout<<"ERROR: CombinationBuilder ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_CombinationBuilder.find("Frequency")!=map_CombinationBuilder.end()) frequency=atof(map_CombinationBuilder["Frequency"].c_str()); else std::cout<<"ERROR: CombinationBuilder Frequency does not exist in configuration file"<<std::endl;
-          double inClock;     if (map_CombinationBuilder.find("InClock")!=map_CombinationBuilder.end()) inClock=atof(map_CombinationBuilder["InClock"].c_str()); else std::cout<<"ERROR: CombinationBuilder InClock does not exist in configuration file"<<std::endl;
-          double delayClock;  if (map_CombinationBuilder.find("DelayClock")!=map_CombinationBuilder.end()) delayClock=atof(map_CombinationBuilder["DelayClock"].c_str()); else std::cout<<"ERROR: CombinationBuilder DelayClock does not exist in configuration file"<<std::endl;
-          double outClock;    if (map_CombinationBuilder.find("OutClock")!=map_CombinationBuilder.end()) outClock=atof(map_CombinationBuilder["OutClock"].c_str()); else std::cout<<"ERROR: CombinationBuilder OutClock does not exist in configuration file"<<std::endl;
-          double inTime=inClock/frequency*1000.;
-          double delay=delayClock/frequency*1000.;
-          double outTime=outClock/frequency*1000.;
-          CombinationBuilder *cb=new CombinationBuilder(name_s, inTime, outTime, delay);
+          double inCLK;       if (map_CombinationBuilder.find("InCLK")!=map_CombinationBuilder.end()) inCLK=atof(map_CombinationBuilder["InCLK"].c_str()); else std::cout<<"ERROR: CombinationBuilder InCLK does not exist in configuration file"<<std::endl;
+          double delayCLK;    if (map_CombinationBuilder.find("DelayCLK")!=map_CombinationBuilder.end()) delayCLK=atof(map_CombinationBuilder["DelayCLK"].c_str()); else std::cout<<"ERROR: CombinationBuilder DelayCLK does not exist in configuration file"<<std::endl;
+          double outCLK;      if (map_CombinationBuilder.find("OutCLK")!=map_CombinationBuilder.end()) outCLK=atof(map_CombinationBuilder["OutCLK"].c_str()); else std::cout<<"ERROR: CombinationBuilder OutCLK does not exist in configuration file"<<std::endl;
+          CombinationBuilder *cb=new CombinationBuilder(name_s, frequency, inCLK, outCLK, delayCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -196,13 +184,10 @@ int main(int argc, char *argv[])
           std::map<std::string, std::string> map_TrackFitter=readConfigurationLine(&file, s);
           std::string name_s; if (map_TrackFitter.find("ComponentName")!=map_TrackFitter.end()) name_s=map_TrackFitter["ComponentName"]; else std::cout<<"ERROR: TrackFitter ComponentName does not exist in configuration file"<<std::endl;
           double frequency;   if (map_TrackFitter.find("Frequency")!=map_TrackFitter.end()) frequency=atof(map_TrackFitter["Frequency"].c_str()); else std::cout<<"ERROR: TrackFitter Frequency does not exist in configuration file"<<std::endl;
-          double inClock;     if (map_TrackFitter.find("InClock")!=map_TrackFitter.end()) inClock=atof(map_TrackFitter["InClock"].c_str()); else std::cout<<"ERROR: TrackFitter InClock does not exist in configuration file"<<std::endl;
-          double delayClock;  if (map_TrackFitter.find("DelayClock")!=map_TrackFitter.end()) delayClock=atof(map_TrackFitter["DelayClock"].c_str()); else std::cout<<"ERROR: TrackFitter DelayClock does not exist in configuration file"<<std::endl;
-          double outClock;    if (map_TrackFitter.find("OutClock")!=map_TrackFitter.end()) outClock=atof(map_TrackFitter["OutClock"].c_str()); else std::cout<<"ERROR: TrackFitter OutClock does not exist in configuration file"<<std::endl;
-          double inTime=inClock/frequency*1000.;
-          double delay=delayClock/frequency*1000.;
-          double outTime=outClock/frequency*1000.;
-          TrackFitter *tf=new TrackFitter(name_s, inTime, outTime, delay);
+          double inCLK;       if (map_TrackFitter.find("InCLK")!=map_TrackFitter.end()) inCLK=atof(map_TrackFitter["InCLK"].c_str()); else std::cout<<"ERROR: TrackFitter InCLK does not exist in configuration file"<<std::endl;
+          double delayCLK;    if (map_TrackFitter.find("DelayCLK")!=map_TrackFitter.end()) delayCLK=atof(map_TrackFitter["DelayCLK"].c_str()); else std::cout<<"ERROR: TrackFitter DelayCLK does not exist in configuration file"<<std::endl;
+          double outCLK;      if (map_TrackFitter.find("OutCLK")!=map_TrackFitter.end()) outCLK=atof(map_TrackFitter["OutCLK"].c_str()); else std::cout<<"ERROR: TrackFitter OutCLK does not exist in configuration file"<<std::endl;
+          TrackFitter *tf=new TrackFitter(name_s, frequency, inCLK, outCLK, delayCLK);
           ComponentRelation *compRelation=new ComponentRelation();
           while (s!="")
           {
@@ -260,9 +245,12 @@ int main(int argc, char *argv[])
   if (tfRatio<0 || tfRatio>1) tfRatio=0;
   
   unsigned int nEvents=tree->GetEntries();
+  nEvents=2;
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     tree->GetEntry(i_event);
+    
+    std::cout<<"=== Event "<<i_event<<" ==="<<std::endl;
     
     EventCharacteristics eventCharacteristics(stubs_modId, stubs_r, roads_stubRefs, tracks_roadRef);
     
@@ -284,7 +272,7 @@ int main(int argc, char *argv[])
       component->computeOutputTimes();
       
       // Printout outputs of this component
-      // component->printOutputTimes();
+      component->printOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp

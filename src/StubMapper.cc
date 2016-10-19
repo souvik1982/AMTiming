@@ -2,11 +2,12 @@
 
 #include "../interface/StubMapper.h"
 
-StubMapper::StubMapper(std::string name, double delay)
+StubMapper::StubMapper(std::string name, double frequency, double delayCLK)
 {
   type_="StubMapper";
   name_=name;
-  delay_=delay;
+  frequency_=frequency;
+  delay_=delayCLK/frequency*1000.;
   for (unsigned int i=0; i<6; ++i)
   {
     t1in_.push_back(-999);
@@ -23,7 +24,7 @@ StubMapper::StubMapper(std::string name, double delay)
     v_h_t1out_.push_back(h_t1out);
     v_h_t2out_.push_back(h_t2out);
   }
-  std::cout<<"LOG: Initialized StubMapper "<<name_<<" with delay = "<<delay_<<" ns"<<std::endl;
+  std::cout<<"LOG: Initialized StubMapper "<<name_<<" with operating frequency = "<<frequency_<<", delayCLK = "<<delayCLK<<std::endl;
 }
 
 bool StubMapper::computeOutputTimes()

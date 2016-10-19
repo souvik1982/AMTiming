@@ -2,11 +2,12 @@
 
 #include "../interface/DataSource.h"
 
-DataSource::DataSource(std::string name, double outTime)
+DataSource::DataSource(std::string name, double frequency, double outCLK)
 {
   type_="DataSource";
   name_=name;
-  outTime_=outTime;
+  frequency_=frequency;
+  outTime_=outCLK/frequency*1000.;
   for (unsigned int i=0; i<6; ++i)
   {
     t1in_.push_back(0);
@@ -25,7 +26,7 @@ DataSource::DataSource(std::string name, double outTime)
   
     v_h_nStubs_.push_back(h_nStubs);
   }
-  std::cout<<"LOG: Initialized DataSource "<<name_<<" with outTime = "<<outTime_<<" ns"<<std::endl;
+  std::cout<<"LOG: Initialized DataSource "<<name_<<" with operating frequency = "<<frequency_<<", outCLK = "<<outCLK<<std::endl;
 }
 
 bool DataSource::computeOutputTimes()

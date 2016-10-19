@@ -4,7 +4,7 @@ class StubMapper: public Component
 {
   public:
   
-    StubMapper(std::string name, double delay);
+    StubMapper(std::string name, double frequency, double delayCLK);
     // bool setEventCharacteristics(EventCharacteristics*);
     bool computeOutputTimes();
     void writeHistograms();
