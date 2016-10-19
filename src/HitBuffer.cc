@@ -30,8 +30,8 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
   h_t1out->SetCanExtend(TH1::kAllAxes);
   h_t2out->SetCanExtend(TH1::kAllAxes);
   
-  v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";HitBuffer "+name_+" t1out").c_str(), 10000, 0, 10000));
-  v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";HitBuffer "+name_+" t2out").c_str(), 10000, 0, 10000));
+  v_h_t1out_.push_back(h_t1out);
+  v_h_t2out_.push_back(h_t2out);
   
   h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 10, 1, 0);
   h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nWords", 10, 1, 0);
