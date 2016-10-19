@@ -118,7 +118,7 @@ void makeCanvas(TH1F *h1, TH1F *h2, double percentile, std::string name_s, std::
 TCanvas* makeCanvasForStack(TH1F *h1, double percentile, std::string name_s, std::string componentType, int &rebin, std::string units="", int color=kBlue)
 {
   h1->SetLineColor(color);
-  rebin=fixRange(h1);
+  // rebin=fixRange(h1);
   
   TCanvas *c=new TCanvas(("c_"+name_s).c_str(), ("c_"+name_s).c_str(), 700, 700);
   if (logScale) c->SetLogy();

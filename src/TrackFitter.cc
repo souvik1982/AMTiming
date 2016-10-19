@@ -24,8 +24,8 @@ TrackFitter::TrackFitter(std::string name, double inTime, double outTime, double
   v_h_t1out_.push_back(h_t1out);
   v_h_t2out_.push_back(h_t2out);
   
-  h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10000, 0, 10000);
-  h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 1000, 0, 1000);
+  h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10, 1, 0);
+  h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 10, 1, 0);
   
   h_nCombinations_->SetCanExtend(TH1::kAllAxes);
   h_nTracks_->SetCanExtend(TH1::kAllAxes);
