@@ -63,48 +63,22 @@ EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std:
   nPatterns=roads_stubRefs_.size();
   nSumMaxSS=0;
   nCombinations=0;
-  
-  std::vector<std::map<int, int> > v_firedSSPerLayer(6); // <SSID, number of stubs>(layer)
-  
-  std::cout<<" === NEW EVENT === "<<std::endl;
   for (unsigned int i_road=0; i_road<roads_stubRefs_.size(); ++i_road)
   {
-    // int nMaxStubPerSuperstrip=0;
-    // double nCombRoad=1;
-    
-    std::cout<<"Road # "<<i_road<<std::endl;
+    int nMaxStubPerSuperstrip=0;
+    double nCombRoad=1;
     for (unsigned int i_superstrip=0; i_superstrip<roads_stubRefs_.at(i_road).size(); ++i_superstrip)
-    {
-      unsigned int nStubs=roads_stubRefs_.at(i_road).at(i_superstrip).size();
-      for (unsigned int i_stub=0; i_stub<nStubs; ++i_stub)
-      {
-        int stubIndex=roads_stubRefs_.at(i_road).at(i_superstrip).at(i_stub);
-        int n=stubLayer(stubs_r_.at(stubIndex), stubs_modId_.at(stubIndex));
-        std::cout<<" layer = "<<n<<std::endl;
-        if (n>=5 and n<11) ++v_firedSSPerLayer.at(n-5)[i_superstrip];
-      }
-    }
-    
-    for (unsigned int i_v_firedSSPerLayer=0; i_v_firedSSPerLayer<v_firedSSPerLayer.size(); ++i_v_firedSSPerLayer)
-    {
-      std::cout<<" Layer "<<i_v_firedSSPerLayer<<" fired "<<v_firedSSPerLayer.at(i_v_firedSSPerLayer).size()<<" SS"<<std::endl;
-    }
-  }
-  std::cout<<" === === "<<std::endl;
-    
-    
-    /*for (unsigned int i_superstrip=0; i_superstrip<roads_stubRefs_.at(i_road).size(); ++i_superstrip)
     {
       unsigned int nStubs=roads_stubRefs_.at(i_road).at(i_superstrip).size();
       if (nStubs>nMaxStubPerSuperstrip) nMaxStubPerSuperstrip=nStubs;
       if (nStubs>0) nCombRoad*=double(nStubs);
     }
-    nOutwords+=nMaxStubPerSuperstrip;*/
+    nSumMaxSS+=nMaxStubPerSuperstrip;
     // nCombinations+=nCombRoad;
     // For bypass
     // nOutwords+=1;
-    // nCombinations+=1;
-  //}
+    nCombinations+=1;
+  }  
   
   // nTracks=tracks_roadRef_.size();
   // For bypass

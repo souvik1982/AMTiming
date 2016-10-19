@@ -15,18 +15,29 @@ HitBuffer::HitBuffer(std::string name, double inTime, double procTime, double ou
     t1in_.push_back(-999);
     t2in_.push_back(-999);
     
-    v_h_nStubs_.push_back(new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
+    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    h_nStubs->SetCanExtend(TH1::kAllAxes);
+    v_h_nStubs_.push_back(h_nStubs);
   }
   t1in_.push_back(-999);
   t2in_.push_back(-999);
   t1out_.push_back(-999);
   t2out_.push_back(-999);
   
+  TH1F *h_t1out=new TH1F(("h_t1out_"+name_).c_str(), (";HitBuffer "+name_+" t1out").c_str(), 10, 1, 0);
+  TH1F *h_t2out=new TH1F(("h_t2out_"+name_).c_str(), (";HitBuffer "+name_+" t2out").c_str(), 10, 1, 0);
+  
+  h_t1out->SetCanExtend(TH1::kAllAxes);
+  h_t2out->SetCanExtend(TH1::kAllAxes);
+  
   v_h_t1out_.push_back(new TH1F(("h_t1out_"+name_).c_str(), (";HitBuffer "+name_+" t1out").c_str(), 10000, 0, 10000));
   v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_).c_str(), (";HitBuffer "+name_+" t2out").c_str(), 10000, 0, 10000));
   
-  h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 1000, 0, 1000);
-  h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nWords", 1000, 0, 1000);
+  h_nPatterns_=new TH1F(("h_nPatterns_"+name_).c_str(), "; nPatterns", 10, 1, 0);
+  h_nOutwords_=new TH1F(("h_nOutwords_"+name_).c_str(), "; nWords", 10, 1, 0);
+  
+  h_nPatterns_->SetCanExtend(TH1::kAllAxes);
+  h_nOutwords_->SetCanExtend(TH1::kAllAxes);
   
   std::cout<<"LOG: Initialized HitBuffer "<<name_<<" with inTime = "<<inTime_<<" ns, procTime = "<<procTime_<<" ns, outTime = "<<outTime_<<" ns, delay = "<<delay_<<" ns"<<std::endl;
 }

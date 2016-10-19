@@ -67,7 +67,7 @@ int fixRange(TH1F *h)
 void makeCanvas(TH1F *h1, double percentile, std::string name_s, std::string componentType, std::string units="", int color=kBlue)
 {
   h1->SetLineColor(color);
-  fixRange(h1);
+  // fixRange(h1);
   
   TCanvas *c=new TCanvas(("c_"+name_s).c_str(), ("c_"+name_s).c_str(), 700, 700);
   if (logScale) c->SetLogy();
@@ -88,8 +88,8 @@ void makeCanvas(TH1F *h1, double percentile, std::string name_s, std::string com
 void makeCanvas(TH1F *h1, TH1F *h2, double percentile, std::string name_s, std::string componentType, std::string units="")
 {
   h2->SetLineColor(kGreen+2);
-  int rebin=fixRange(h2);
-  if (rebin>0) h1->Rebin(rebin);
+  // int rebin=fixRange(h2);
+  // if (rebin>0) h1->Rebin(rebin);
   TCanvas *c=new TCanvas(("c_"+name_s).c_str(), ("c_"+name_s).c_str(), 700, 700);
   if (logScale) c->SetLogy();
   h2->SetTitle(("; "+componentType+" "+name_s+" ("+units+")").c_str());

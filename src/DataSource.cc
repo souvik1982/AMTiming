@@ -14,10 +14,16 @@ DataSource::DataSource(std::string name, double outTime)
     t1out_.push_back(-999);
     t2out_.push_back(-999);
     
+    TH1F *h_t2out=new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    
+    h_t2out->SetCanExtend(TH1::kAllAxes);
+    h_nStubs->SetCanExtend(TH1::kAllAxes);
+    
     v_h_t1out_.push_back(0);
-    v_h_t2out_.push_back(new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
+    v_h_t2out_.push_back(h_t2out);
   
-    v_h_nStubs_.push_back(new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000));
+    v_h_nStubs_.push_back(h_nStubs);
   }
   std::cout<<"LOG: Initialized DataSource "<<name_<<" with outTime = "<<outTime_<<" ns"<<std::endl;
 }
