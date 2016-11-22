@@ -16,8 +16,8 @@ TrackFitter::TrackFitter(std::string name, double frequency, double inCLK, doubl
   t1out_.push_back(-999);
   t2out_.push_back(-999);
   
-  TH1F *h_t1out=new TH1F(("h_t1out_"+name_).c_str(), (";TrackFitter "+name_+" t1out").c_str(), 10, 1, 0);
-  TH1F *h_t2out=new TH1F(("h_t2out_"+name_).c_str(), (";TrackFitter "+name_+" t2out").c_str(), 10, 1, 0);
+  TH1F *h_t1out=new TH1F(("h_t1out_"+name_).c_str(), (";TrackFitter "+name_+" t1out").c_str(), 1000, 0, 1000);
+  TH1F *h_t2out=new TH1F(("h_t2out_"+name_).c_str(), (";TrackFitter "+name_+" t2out").c_str(), 1000, 0, 1000);
   
   h_t1out->SetCanExtend(TH1::kAllAxes);
   h_t2out->SetCanExtend(TH1::kAllAxes);
@@ -25,8 +25,8 @@ TrackFitter::TrackFitter(std::string name, double frequency, double inCLK, doubl
   v_h_t1out_.push_back(h_t1out);
   v_h_t2out_.push_back(h_t2out);
   
-  h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 10, 1, 0);
-  h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 10, 1, 0);
+  h_nCombinations_=new TH1F(("h_nCombinations_"+name_).c_str(), "; nCombinations", 1000, 0, 1000);
+  h_nTracks_=new TH1F(("h_nTracks_"+name_).c_str(), "; nTracks", 1000, 0, 1000);
   
   h_nCombinations_->SetCanExtend(TH1::kAllAxes);
   h_nTracks_->SetCanExtend(TH1::kAllAxes);

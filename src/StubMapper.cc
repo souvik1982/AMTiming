@@ -15,8 +15,8 @@ StubMapper::StubMapper(std::string name, double frequency, double delayCLK)
     t1out_.push_back(-999);
     t2out_.push_back(-999);
     
-    TH1F *h_t1out=new TH1F(("h_t1out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 10, 1, 0);
-    TH1F *h_t2out=new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    TH1F *h_t1out=new TH1F(("h_t1out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t1out").c_str(), 1000, 0, 1000);
+    TH1F *h_t2out=new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";StubMapper "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000);
     
     h_t1out->SetCanExtend(TH1::kAllAxes);
     h_t2out->SetCanExtend(TH1::kAllAxes);
@@ -37,7 +37,7 @@ bool StubMapper::computeOutputTimes()
   
   for (unsigned int i=0; i<6; ++i)
   {
-    if (t1in_.at(i)!=-999 && t2in_.at(i)!=-999)
+    // if (t1in_.at(i)!=-999 && t2in_.at(i)!=-999)
     {
       t1out_.at(i)=t1in_.at(i)+delay_;
       t2out_.at(i)=t2in_.at(i)+delay_;
@@ -45,11 +45,11 @@ bool StubMapper::computeOutputTimes()
       v_h_t1out_.at(i)->Fill(t1out_.at(i));
       v_h_t2out_.at(i)->Fill(t2out_.at(i));
     }
-    else
+    /*else
     {
       std::cout<<"ERROR: StubMapper "<<name_<<" has not been set. t1in_.at("<<i<<") = "<<t1in_.at(i)<<", t2in_.at("<<i<<") = "<<t2in_.at(i)<<std::endl;
       return false;
-    }
+    }*/
   }
   return true;
 }

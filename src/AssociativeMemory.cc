@@ -15,9 +15,9 @@ AssociativeMemory::AssociativeMemory(std::string name, double frequency, double 
     t1in_.push_back(-999);
     t2in_.push_back(-999);
     
-    TH1F *h_t1out_term1=new TH1F(("h_t1out_term1_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term1").c_str(), 10, 1, 0);
-    TH1F *h_t1out_term2=new TH1F(("h_t1out_term2_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term2").c_str(), 10, 1, 0);
-    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    TH1F *h_t1out_term1=new TH1F(("h_t1out_term1_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term1").c_str(), 1000, 0, 1000);
+    TH1F *h_t1out_term2=new TH1F(("h_t1out_term2_"+name_+"_"+itoa(i)).c_str(), ("; AssociativeMemory "+name_+" t1out term2").c_str(), 1000, 0, 1000);
+    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000);
     
     h_t1out_term1->SetCanExtend(TH1::kAllAxes);
     h_t1out_term2->SetCanExtend(TH1::kAllAxes);
@@ -31,8 +31,8 @@ AssociativeMemory::AssociativeMemory(std::string name, double frequency, double 
   t1out_.push_back(-999);
   t2out_.push_back(-999);
   
-  TH1F *h_t1out=new TH1F(("h_t1out_"+name_).c_str(), (";AssociativeMemory "+name_+" t1out").c_str(), 10, 1, 0);
-  TH1F *h_t2out=new TH1F(("h_t2out_"+name_).c_str(), (";AssociativeMemory "+name_+" t2out").c_str(), 10, 1, 0);
+  TH1F *h_t1out=new TH1F(("h_t1out_"+name_).c_str(), (";AssociativeMemory "+name_+" t1out").c_str(), 1000, 0, 1000);
+  TH1F *h_t2out=new TH1F(("h_t2out_"+name_).c_str(), (";AssociativeMemory "+name_+" t2out").c_str(), 1000, 0, 1000);
   
   h_t1out->SetCanExtend(TH1::kAllAxes);
   h_t2out->SetCanExtend(TH1::kAllAxes);
@@ -98,7 +98,7 @@ bool AssociativeMemory::computeOutputTimes()
     } 
     if (event_.nPatterns!=-999)
     {
-      t2out_.at(0)=t1out_.at(0)+std::max(0., event_.nPatterns-1)*outTime_;
+      t2out_.at(0)=t1out_.at(0)+std::max(0., event_.nPatterns-1)*outTime_; // -1 because t1out = t2out if there's 1 pattern
       v_h_t2out_.at(0)->Fill(t2out_.at(0));
     }
     else

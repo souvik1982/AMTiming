@@ -28,9 +28,9 @@ EventCharacteristics::EventCharacteristics()
   nStubs_layer.at(5)=0;
   nPatterns=0;
   nSumMaxSS=0;
-  nCombinations=0;
+  nCombinations=1;
   nTracks=0;
-} 
+}
 
 EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std::vector<float> *stubs_r, std::vector<std::vector<std::vector<unsigned int> > > *roads_stubRefs, std::vector<unsigned int> *tracks_roadRef)
 {
@@ -61,28 +61,19 @@ EventCharacteristics::EventCharacteristics(std::vector<float> *stubs_modId, std:
   }
   
   nPatterns=roads_stubRefs_.size();
-  nSumMaxSS=0;
-  nCombinations=0;
+  
   for (unsigned int i_road=0; i_road<roads_stubRefs_.size(); ++i_road)
   {
-    int nMaxStubPerSuperstrip=0;
     double nCombRoad=1;
     for (unsigned int i_superstrip=0; i_superstrip<roads_stubRefs_.at(i_road).size(); ++i_superstrip)
     {
-      unsigned int nStubs=roads_stubRefs_.at(i_road).at(i_superstrip).size();
-      if (nStubs>nMaxStubPerSuperstrip) nMaxStubPerSuperstrip=nStubs;
+      unsigned int nStubs=std::max((unsigned long)0, std::min((unsigned long)4, roads_stubRefs_.at(i_road).at(i_superstrip).size()));
       if (nStubs>0) nCombRoad*=double(nStubs);
     }
-    nSumMaxSS+=nMaxStubPerSuperstrip;
-    // nCombinations+=nCombRoad;
-    // For bypass
-    // nOutwords+=1;
-    nCombinations+=1;
-  }  
+    nCombinations+=nCombRoad;
+  }
   
-  // nTracks=tracks_roadRef_.size();
-  // For bypass
-  nTracks=std::min(nCombinations, double(tracks_roadRef_.size()));
+  nTracks=tracks_roadRef_.size();
 }
 
 void EventCharacteristics::splitEventAtAM(unsigned int nAM, std::vector<EventCharacteristics> *events)
@@ -116,6 +107,21 @@ void EventCharacteristics::splitEventAtAM(unsigned int nAM, std::vector<EventCha
     EventCharacteristics event(&(stubs_modId_), &(stubs_r_), &(event_Roads_stubRefs.at(i_AM)), &(event_Tracks_roadRef.at(i_AM)));
     events->push_back(event);
   }
+}
+
+void EventCharacteristics::print()
+{
+  std::cout<<"- Event Characteristics print - "<<std::endl;
+  std::cout<<"nStubs in layer 0 = "<<nStubs_layer.at(0)<<std::endl;
+  std::cout<<"nStubs in layer 1 = "<<nStubs_layer.at(1)<<std::endl;
+  std::cout<<"nStubs in layer 2 = "<<nStubs_layer.at(2)<<std::endl;
+  std::cout<<"nStubs in layer 3 = "<<nStubs_layer.at(3)<<std::endl;
+  std::cout<<"nStubs in layer 4 = "<<nStubs_layer.at(4)<<std::endl;
+  std::cout<<"nStubs in layer 5 = "<<nStubs_layer.at(5)<<std::endl;
+  std::cout<<"nPatterns = "<<nPatterns<<std::endl;
+  std::cout<<"nSumMaxSS = "<<nSumMaxSS<<std::endl;
+  std::cout<<"nCombinations = "<<nCombinations<<std::endl;
+  std::cout<<"nTracks = "<<nTracks<<std::endl;
 }
     
     

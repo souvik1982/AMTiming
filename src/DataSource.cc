@@ -15,8 +15,8 @@ DataSource::DataSource(std::string name, double frequency, double outCLK)
     t1out_.push_back(-999);
     t2out_.push_back(-999);
     
-    TH1F *h_t2out=new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
-    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 10, 1, 0);
+    TH1F *h_t2out=new TH1F(("h_t2out_"+name_+"_"+itoa(i)).c_str(), (";DataSource "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000);
+    TH1F *h_nStubs=new TH1F(("h_nStubs_"+name_+"_"+itoa(i)).c_str(), ("; nStubs "+name_+" layer "+itoa(i)+" t2out").c_str(), 1000, 0, 1000);
     
     h_t2out->SetCanExtend(TH1::kAllAxes);
     h_nStubs->SetCanExtend(TH1::kAllAxes);

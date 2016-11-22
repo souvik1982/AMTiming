@@ -245,14 +245,15 @@ int main(int argc, char *argv[])
   if (tfRatio<0 || tfRatio>1) tfRatio=0;
   
   unsigned int nEvents=tree->GetEntries();
-  nEvents=2;
+  // for (unsigned int i_event=28; i_event<29; ++i_event)
   for (unsigned int i_event=0; i_event<nEvents; ++i_event)
   {
     tree->GetEntry(i_event);
     
-    std::cout<<"=== Event "<<i_event<<" ==="<<std::endl;
+    // std::cout<<"=== Event "<<i_event<<" ==="<<std::endl;
     
     EventCharacteristics eventCharacteristics(stubs_modId, stubs_r, roads_stubRefs, tracks_roadRef);
+    // eventCharacteristics.print();
     
     // Quick test to only check single muon events with 6 stubs
     // to establish contact with hardware testing
@@ -272,7 +273,7 @@ int main(int argc, char *argv[])
       component->computeOutputTimes();
       
       // Printout outputs of this component
-      component->printOutputTimes();
+      // component->printOutputTimes();
       
       // How many outputs does this component have?
       // Connect all of them to specified inputs of the i_comp
