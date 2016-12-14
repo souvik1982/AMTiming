@@ -6,7 +6,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
 #include <assert.h>
 #define G__DICTIONARY
@@ -57,8 +56,8 @@ namespace ROOT {
       vector<vector<vector<unsigned int> > > *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<vector<vector<unsigned int> > >));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<vector<vector<unsigned int> > >", -2, "vector", 481,
-                  typeid(vector<vector<vector<unsigned int> > >), DefineBehavior(ptr, ptr),
+         instance("vector<vector<vector<unsigned int> > >", -2, "vector", 457,
+                  typeid(vector<vector<vector<unsigned int> > >), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEvectorlEvectorlEunsignedsPintgRsPgRsPgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<vector<vector<unsigned int> > >) );
       instance.SetNew(&new_vectorlEvectorlEvectorlEunsignedsPintgRsPgRsPgR);
@@ -87,10 +86,10 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlEvectorlEvectorlEunsignedsPintgRsPgRsPgR(void *p) {
-      return  p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<vector<unsigned int> > > : new vector<vector<vector<unsigned int> > >;
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<vector<unsigned int> > > : new vector<vector<vector<unsigned int> > >;
    }
    static void *newArray_vectorlEvectorlEvectorlEunsignedsPintgRsPgRsPgR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<vector<unsigned int> > >[nElements] : new vector<vector<vector<unsigned int> > >[nElements];
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<vector<unsigned int> > >[nElements] : new vector<vector<vector<unsigned int> > >[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlEvectorlEvectorlEunsignedsPintgRsPgRsPgR(void *p) {
@@ -120,8 +119,8 @@ namespace ROOT {
       vector<vector<unsigned int> > *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<vector<unsigned int> >));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<vector<unsigned int> >", -2, "vector", 481,
-                  typeid(vector<vector<unsigned int> >), DefineBehavior(ptr, ptr),
+         instance("vector<vector<unsigned int> >", -2, "vector", 457,
+                  typeid(vector<vector<unsigned int> >), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEvectorlEunsignedsPintgRsPgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<vector<unsigned int> >) );
       instance.SetNew(&new_vectorlEvectorlEunsignedsPintgRsPgR);
@@ -150,10 +149,10 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlEvectorlEunsignedsPintgRsPgR(void *p) {
-      return  p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<unsigned int> > : new vector<vector<unsigned int> >;
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<unsigned int> > : new vector<vector<unsigned int> >;
    }
    static void *newArray_vectorlEvectorlEunsignedsPintgRsPgR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<unsigned int> >[nElements] : new vector<vector<unsigned int> >[nElements];
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<unsigned int> >[nElements] : new vector<vector<unsigned int> >[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlEvectorlEunsignedsPintgRsPgR(void *p) {
@@ -183,8 +182,8 @@ namespace ROOT {
       vector<vector<float> > *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<vector<float> >));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<vector<float> >", -2, "vector", 481,
-                  typeid(vector<vector<float> >), DefineBehavior(ptr, ptr),
+         instance("vector<vector<float> >", -2, "vector", 457,
+                  typeid(vector<vector<float> >), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEvectorlEfloatgRsPgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<vector<float> >) );
       instance.SetNew(&new_vectorlEvectorlEfloatgRsPgR);
@@ -213,10 +212,10 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlEvectorlEfloatgRsPgR(void *p) {
-      return  p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<float> > : new vector<vector<float> >;
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<float> > : new vector<vector<float> >;
    }
    static void *newArray_vectorlEvectorlEfloatgRsPgR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<vector<float> >[nElements] : new vector<vector<float> >[nElements];
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<vector<float> >[nElements] : new vector<vector<float> >[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlEvectorlEfloatgRsPgR(void *p) {
@@ -246,8 +245,8 @@ namespace ROOT {
       vector<unsigned int> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<unsigned int>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<unsigned int>", -2, "vector", 481,
-                  typeid(vector<unsigned int>), DefineBehavior(ptr, ptr),
+         instance("vector<unsigned int>", -2, "vector", 457,
+                  typeid(vector<unsigned int>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEunsignedsPintgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<unsigned int>) );
       instance.SetNew(&new_vectorlEunsignedsPintgR);
@@ -276,10 +275,10 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlEunsignedsPintgR(void *p) {
-      return  p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<unsigned int> : new vector<unsigned int>;
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<unsigned int> : new vector<unsigned int>;
    }
    static void *newArray_vectorlEunsignedsPintgR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<unsigned int>[nElements] : new vector<unsigned int>[nElements];
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<unsigned int>[nElements] : new vector<unsigned int>[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlEunsignedsPintgR(void *p) {
@@ -309,8 +308,8 @@ namespace ROOT {
       vector<float> *ptr = 0;
       static ::TVirtualIsAProxy* isa_proxy = new ::TIsAProxy(typeid(vector<float>));
       static ::ROOT::TGenericClassInfo 
-         instance("vector<float>", -2, "vector", 481,
-                  typeid(vector<float>), DefineBehavior(ptr, ptr),
+         instance("vector<float>", -2, "vector", 457,
+                  typeid(vector<float>), ::ROOT::Internal::DefineBehavior(ptr, ptr),
                   &vectorlEfloatgR_Dictionary, isa_proxy, 4,
                   sizeof(vector<float>) );
       instance.SetNew(&new_vectorlEfloatgR);
@@ -339,10 +338,10 @@ namespace ROOT {
 namespace ROOT {
    // Wrappers around operator new
    static void *new_vectorlEfloatgR(void *p) {
-      return  p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<float> : new vector<float>;
+      return  p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<float> : new vector<float>;
    }
    static void *newArray_vectorlEfloatgR(Long_t nElements, void *p) {
-      return p ? ::new((::ROOT::TOperatorNewHelper*)p) vector<float>[nElements] : new vector<float>[nElements];
+      return p ? ::new((::ROOT::Internal::TOperatorNewHelper*)p) vector<float>[nElements] : new vector<float>[nElements];
    }
    // Wrapper around operator delete
    static void delete_vectorlEfloatgR(void *p) {
@@ -364,12 +363,12 @@ namespace {
 0
     };
     static const char* includePaths[] = {
-"/usr/bin/root/include",
+"/Applications/root_v6.08.00/include",
 "/Users/souvik/AMTrackTrigger/AMTiming/",
 0
     };
-    static const char* fwdDeclCode = 
-R"DICTFWDDCLS(
+    static const char* fwdDeclCode = R"DICTFWDDCLS(
+#line 1 "RootDictionary dictionary forward declarations' payload"
 #pragma clang diagnostic ignored "-Wkeyword-compat"
 #pragma clang diagnostic ignored "-Wignored-attributes"
 #pragma clang diagnostic ignored "-Wreturn-type-c-linkage"
@@ -378,6 +377,7 @@ namespace std{inline namespace __1{template <class _Tp> class __attribute__((ann
 }}
 )DICTFWDDCLS";
     static const char* payloadCode = R"DICTPAYLOAD(
+#line 1 "RootDictionary dictionary payload"
 
 #ifndef G__VECTOR_HAS_CLASS_ITERATOR
   #define G__VECTOR_HAS_CLASS_ITERATOR 1
@@ -389,11 +389,6 @@ namespace std{inline namespace __1{template <class _Tp> class __attribute__((ann
 #undef  _BACKWARD_BACKWARD_WARNING_H
 )DICTPAYLOAD";
     static const char* classesHeaders[]={
-"vector<vector<float> >", payloadCode, "@",
-"vector<vector<unsigned int> >", payloadCode, "@",
-"vector<vector<unsigned> >", payloadCode, "@",
-"vector<vector<vector<unsigned int> > >", payloadCode, "@",
-"vector<vector<vector<unsigned> > >", payloadCode, "@",
 nullptr};
 
     static bool isInitialized = false;
